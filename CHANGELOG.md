@@ -1,5 +1,85 @@
 # Release Notes
 
+## 2.5.1 (2023-05-15)
+
+- Fix js error thrown in dialog component
+- Remove 2FA info from internal users/load api
+- Update icons
+- Minor UI improvements
+- add `content.remove.before` event
+- Refactor `kiss-popoutmenu` component to `kiss-popout`
+- Introduce `user-info` component
+- Update Vue to v3.3.2
+- Update vendor libs
+
+## 2.5.0 (2023-04-15)
+
+- Fix initial item position on tree item creation
+- Add avif image type support (depending on used GD lib)
+- Add experimental natural language to mongo query support (only for admin ui filtering collection items and assets)
+- Add lightweight indexing library (for full-text search)
+- Make logged login data configurable
+- Add filter models feature on role permission page
+- Fix populate option singleton data queries via GraphQL
+- Clone / duplicate collection items
+- Refactor admin ui language loading
+- Add `content:field:remove` and `content:field:rename` tower cli commands to cleanup content data after model changes
+
+
+## 2.4.1 (2023-03-20)
+
+- Add field preview renderer for boolen field
+- Fix tag field
+- Add display meta property support for tree content models
+- Add active property to field-nav items
+- Add additional security check when uploading files
+- Fix assets image cache check
+- Add thumbnail api usage to internal bucket storage file previews
+- Improve revisions display performance
+
+## 2.4.0 (2023-03-08)
+
+- Add additional security check editing php files in finder
+- Fix base64 encoding data not in latin char range
+- Add internal bucket storage container feature
+- Add /content/tree/{model} api endpoint
+- Batch edit content items
+- Update vendor libs
+
+## 2.3.9 (2023-02-13)
+
+- Fix batch state update (when using MongoLite) #75
+- Fix min/max settings for number fields #76
+- Set X-Frame-Options to prevent possible clickjacking via iframe layer
+- Allow to load linked content items in display previews #78
+- Allow to load thumbnails from linked assets in display previews
+
+## 2.3.8 (2023-02-04)
+
+- Fix not allowed user role modification by intercepting request
+- Fix tree item view #72
+- Update Vue to v3.2.47
+- Improve svg loading for <kiss-svg /> elements
+- Update vendor libs
+
+## 2.3.7 (2023-01-31)
+
+- Batch update collection items state
+- Add state filter to collection items view
+- Fix possible infinite content population loop
+- Fix filter option for collection link field
+- Add content view aside event triggers
+- Deep clone data object for preview interpolation
+- Update vendor libs
+
+## 2.3.6 (2023-01-03)
+
+- Fix tree model nesting items
+- Fix table preview for repeatable wysiwyg fields
+- Fix clearing readonly fields
+- Fix filter option for collection link field
+- Update vendor libs
+
 ## 2.3.5 (2022-12-15)
 
 - Fix getallheaders keys

@@ -7,7 +7,6 @@ namespace Doctrine\Common\Lexer;
 use ReflectionClass;
 use UnitEnum;
 
-use function get_class;
 use function implode;
 use function preg_split;
 use function sprintf;
@@ -21,59 +20,52 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
  * Base class for writing simple lexers, i.e. for creating small DSLs.
  *
  * @template T of UnitEnum|string|int
+ * @template V of string|int
  */
 abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
-     *
-     * @var string
      */
-    private $input;
+    private string $input;
 
     /**
      * Array of scanned tokens.
      *
-     * @var list<Token<T>>
+     * @var list<Token<T, V>>
      */
-    private $tokens = [];
+    private array $tokens = [];
 
     /**
      * Current lexer position in input string.
-     *
-     * @var int
      */
-    private $position = 0;
+    private int $position = 0;
 
     /**
      * Current peek of current lexer position.
-     *
-     * @var int
      */
-    private $peek = 0;
+    private int $peek = 0;
 
     /**
      * The next token in the input.
      *
      * @var mixed[]|null
-     * @psalm-var Token<T>|null
+     * @psalm-var Token<T, V>|null
      */
-    public $lookahead;
+    public Token|null $lookahead;
 
     /**
      * The last matched/seen token.
      *
      * @var mixed[]|null
-     * @psalm-var Token<T>|null
+     * @psalm-var Token<T, V>|null
      */
-    public $token;
+    public Token|null $token;
 
     /**
      * Composed regex for input parsing.
-     *
-     * @var string|null
      */
-    private $regex;
+    private string|null $regex = null;
 
     /**
      * Sets the input data to be tokenized.
@@ -85,7 +77,7 @@ abstract class AbstractLexer
      *
      * @return void
      */
-    public function setInput($input)
+    public function setInput(string $input)
     {
         $this->input  = $input;
         $this->tokens = [];
@@ -124,7 +116,7 @@ abstract class AbstractLexer
      *
      * @return void
      */
-    public function resetPosition($position = 0)
+    public function resetPosition(int $position = 0)
     {
         $this->position = $position;
     }
@@ -132,11 +124,9 @@ abstract class AbstractLexer
     /**
      * Retrieve the original lexer's input until a given position.
      *
-     * @param int $position
-     *
      * @return string
      */
-    public function getInputUntilPosition($position)
+    public function getInputUntilPosition(int $position)
     {
         return substr($this->input, 0, $position);
     }
@@ -147,8 +137,10 @@ abstract class AbstractLexer
      * @param T $type
      *
      * @return bool
+     *
+     * @psalm-assert-if-true !=null $this->lookahead
      */
-    public function isNextToken($type)
+    public function isNextToken(int|string|UnitEnum $type)
     {
         return $this->lookahead !== null && $this->lookahead->isA($type);
     }
@@ -159,6 +151,8 @@ abstract class AbstractLexer
      * @param list<T> $types
      *
      * @return bool
+     *
+     * @psalm-assert-if-true !=null $this->lookahead
      */
     public function isNextTokenAny(array $types)
     {
@@ -169,6 +163,8 @@ abstract class AbstractLexer
      * Moves to the next token in the input string.
      *
      * @return bool
+     *
+     * @psalm-assert-if-true !null $this->lookahead
      */
     public function moveNext()
     {
@@ -187,7 +183,7 @@ abstract class AbstractLexer
      *
      * @return void
      */
-    public function skipUntil($type)
+    public function skipUntil(int|string|UnitEnum $type)
     {
         while ($this->lookahead !== null && ! $this->lookahead->isA($type)) {
             $this->moveNext();
@@ -197,12 +193,9 @@ abstract class AbstractLexer
     /**
      * Checks if given value is identical to the given token.
      *
-     * @param string     $value
-     * @param int|string $token
-     *
      * @return bool
      */
-    public function isA($value, $token)
+    public function isA(string $value, int|string|UnitEnum $token)
     {
         return $this->getType($value) === $token;
     }
@@ -211,7 +204,7 @@ abstract class AbstractLexer
      * Moves the lookahead token forward.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     * @psalm-return Token<T>|null
+     * @psalm-return Token<T, V>|null
      */
     public function peek()
     {
@@ -226,7 +219,7 @@ abstract class AbstractLexer
      * Peeks at the next token, returns it and immediately resets the peek.
      *
      * @return mixed[]|null The next token or NULL if there are no more tokens ahead.
-     * @psalm-return Token<T>|null
+     * @psalm-return Token<T, V>|null
      */
     public function glimpse()
     {
@@ -243,14 +236,14 @@ abstract class AbstractLexer
      *
      * @return void
      */
-    protected function scan($input)
+    protected function scan(string $input)
     {
         if (! isset($this->regex)) {
             $this->regex = sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
                 implode('|', $this->getNonCatchablePatterns()),
-                $this->getModifiers()
+                $this->getModifiers(),
             );
         }
 
@@ -264,12 +257,13 @@ abstract class AbstractLexer
 
         foreach ($matches as $match) {
             // Must remain before 'value' assignment since it can change content
-            $type = $this->getType($match[0]);
+            $firstMatch = $match[0];
+            $type       = $this->getType($firstMatch);
 
             $this->tokens[] = new Token(
-                $match[0],
+                $firstMatch,
                 $type,
-                $match[1]
+                $match[1],
             );
         }
     }
@@ -281,10 +275,10 @@ abstract class AbstractLexer
      *
      * @return int|string
      */
-    public function getLiteral($token)
+    public function getLiteral(int|string|UnitEnum $token)
     {
         if ($token instanceof UnitEnum) {
-            return get_class($token) . '::' . $token->name;
+            return $token::class . '::' . $token->name;
         }
 
         $className = static::class;
@@ -328,9 +322,9 @@ abstract class AbstractLexer
     /**
      * Retrieve token type. Also processes the token value if necessary.
      *
-     * @param string $value
-     *
      * @return T|null
+     *
+     * @param-out V $value
      */
-    abstract protected function getType(&$value);
+    abstract protected function getType(string &$value);
 }

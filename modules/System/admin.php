@@ -17,15 +17,24 @@ $this->bindClass('System\\Controller\\Settings', '/system');
 
 $this->on('app.layout.init', function() {
 
-    if ($this->helper('acl')->isAllowed('app/api/manage')) {
-
-        $this->helper('menus')->addLink('modules', [
-            'label'  => 'Api',
-            'icon'   => 'system:assets/icons/api.svg',
-            'route'  => '/system/api',
-            'active' => false
-        ]);
+    if (!$this->helper('acl')->isAllowed('app/api/manage')) {
+        return;
     }
+
+    $this->helper('menus')->addLink('modules', [
+        'label'  => 'Api',
+        'icon'   => 'system:assets/icons/api.svg',
+        'route'  => '/system/api',
+        'active' => false
+    ]);
+});
+
+$this->on('app.layout.assets', function(&$assets, $version, $context) {
+
+    // include app license component
+    $assets[] = 'system:assets/components/app-license/app-license.js';
+    $assets[] = 'system:assets/components/app-license/app-license.css';
+
 });
 
 $this->on('app.permissions.collect', function (ArrayObject $permissions) {
@@ -46,13 +55,31 @@ $this->on('app.permissions.collect', function (ArrayObject $permissions) {
 
 $this->on('app.user.login', function($user) {
 
-    $this->module('system')->log("User Login: {$user['user']}", type: 'info', context: [
+    $config = $this->retrieve('log/login', true);
+
+    if ($config === false) {
+        return;
+    }
+
+    $log = [
         '_id' => $user['_id'],
         'user' => $user['user'],
         'name' => $user['name'],
         'email' => $user['email'],
         'ip' => $this->getClientIp()
-    ]);
+    ];
+
+    if (is_array($config)) {
+
+        foreach (array_keys($log) as $prop) {
+
+            if (!in_array($prop, ['_id', 'user']) && !in_array($prop, $config)) {
+                unset($log[$prop]);
+            }
+        }
+    }
+
+    $this->module('system')->log("User Login: {$user['user']}", type: 'info', context: $log);
 });
 
 

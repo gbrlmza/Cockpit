@@ -1,6 +1,6 @@
 <?php
 
-define('APP_VERSION', '2.3.5');
+define('APP_VERSION', '2.5.1');
 
 if (!defined('APP_START_TIME')) define('APP_START_TIME', microtime(true));
 if (!defined('APP_ADMIN')) define('APP_ADMIN', false);
@@ -76,6 +76,10 @@ class Cockpit {
             ],
             'memory' => [
                 'server' => "redislite://{$envDir}/storage/data/app.memory.sqlite",
+                'options' => []
+            ],
+            'search' => [
+                'server' => "indexlite://{$envDir}/storage/data",
                 'options' => []
             ],
 
@@ -198,6 +202,12 @@ class Cockpit {
             ],$config['memory']['options']));
 
             return $client;
+        });
+
+        // full-text search
+        $app->service('search', function() use($config) {
+            $manager = new IndexHybrid\Manager($config['search']['server'], $config['search']['options']);
+            return $manager;
         });
 
         // mailer service

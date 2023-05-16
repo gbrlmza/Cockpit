@@ -6,7 +6,7 @@ export default {
             items: [],
             loading: true,
             fieldTypes: null,
-            filter: '',
+            fltr: '',
             txtFilter: '',
             page: 1,
             pages: 1,
@@ -44,27 +44,65 @@ export default {
     },
 
     watch: {
-        filter(val) {
+        fltr(val) {
             this.txtFilter = val;
             this.load();
         },
     },
 
+    methods: {
+
+        load(page = 1) {
+
+            let options = {
+                limit: this.limit,
+                skip: (page - 1) * this.limit,
+            };
+
+            let filter = [];
+
+            if (this.filter) filter.push(this.filter);
+            if (this.fltr) filter.push(this.fltr);
+
+            if (filter.length) {
+                options.filter = filter;
+            }
+
+            this.loading = true;
+            this.selected = [];
+
+            this.$request(`/content/collection/find/${this.model.name}`, {options}).then(rsp => {
+                this.items = rsp.items;
+                this.page = rsp.page;
+                this.pages = rsp.pages;
+                this.count = rsp.count;
+
+                this.loading = false;
+            })
+        },
+
+        pick(item) {
+            this.$call('pickItem', item);
+            this.$close();
+        }
+    },
+
     template: /*html*/`
         <div>
 
-            <div class="kiss-size-4 kiss-text-bold kiss-margin kiss-flex kiss-flex-middle">
-                <icon class="kiss-margin-small-right kiss-size-3" size="larger">link</icon>
-                <div class="kiss-flex-1">{{ t('Select model item') }}</div>
-                <div class="kiss-badge kiss-badge-outline kiss-color-muted">{{ model.label || model.name }}</div>
+            <div class="kiss-margin kiss-flex kiss-flex-middle">
+                <div class="kiss-flex-1">
+                    <div class="kiss-color-muted kiss-size-small">{{ model.label || model.name }}</div>
+                    <div class="kiss-size-4 kiss-text-bold">{{ t('Select model item') }}</div>
+                </div>
             </div>
 
-            <form class="kiss-flex kiss-margin" :class="{'kiss-disabled': loading}" @submit.prevent="filter = txtFilter">
+            <form class="kiss-flex kiss-margin" :class="{'kiss-disabled': loading}" @submit.prevent="fltr = txtFilter">
 
                 <input type="text" class="kiss-input kiss-flex-1 kiss-margin-xsmall-right" :placeholder="t('Filter items...')" v-model="txtFilter">
 
                 <div class="kiss-button-group kiss-margin-small-left">
-                    <button type="button" class="kiss-button" @click="filter = ''" v-if="filter">{{ t('Reset') }}</button>
+                    <button type="button" class="kiss-button" @click="fltr = ''" v-if="fltr">{{ t('Reset') }}</button>
                     <button class="kiss-button kiss-flex">{{ t('Search') }}</button>
                 </div>
             </form>
@@ -115,15 +153,17 @@ export default {
             <div class="kiss-flex kiss-flex-right kiss-margin-top">
 
                 <div class="kiss-flex kiss-flex-middle kiss-flex-1" v-if="!loading && count">
-                    <div class="kiss-size-small">{{ count }} {{count == 1 ? t('Item') : t('Items') }}</div>
-                    <div class="kiss-margin-small-left kiss-overlay-input">
-                        <span class="kiss-badge kiss-badge-outline kiss-color-muted">{{ page }} / {{pages}}</span>
-                        <select v-model="page" @change="load(page)" v-if="pages > 1"><option v-for="p in pages" :value="p">{{ p }}</option></select>
-                    </div>
-                    <div class="kiss-margin-small-left kiss-size-small">
-                        <a class="kiss-margin-small-right" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
-                        <a v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
-                    </div>
+                    <app-pagination>
+                        <div class="kiss-color-muted">{{ count }} {{ count == 1 ? t('Item') : t('Items') }}</div>
+                        <a class="kiss-margin-small-left" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
+                        <div class="kiss-margin-small-left kiss-overlay-input" v-if="count > limit">
+                            <strong>{{ page }} &mdash; {{pages}}</strong>
+                            <select v-model="page" @change="load(page)" v-if="pages > 1">
+                                <option v-for="p in pages" :value="p">{{ p }}</option>
+                            </select>
+                        </div>
+                        <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
+                    </app-pagination>
                 </div>
 
                 <button class="kiss-button kiss-button-primary" @click="$close()">
@@ -131,37 +171,5 @@ export default {
                 </button>
             </div>
         </div>
-    `,
-
-    methods: {
-
-        load(page = 1) {
-
-            let options = {
-                limit: this.limit,
-                skip: (page - 1) * this.limit,
-            };
-
-            if (this.filter) {
-                options.filter = this.filter;
-            }
-
-            this.loading = true;
-            this.selected = [];
-
-            this.$request(`/content/collection/find/${this.model.name}`, {options}).then(rsp => {
-                this.items = rsp.items;
-                this.page = rsp.page;
-                this.pages = rsp.pages;
-                this.count = rsp.count;
-
-                this.loading = false;
-            })
-        },
-
-        pick(item) {
-            this.$call('pickItem', item);
-            this.$close();
-        }
-    }
+    `
 }

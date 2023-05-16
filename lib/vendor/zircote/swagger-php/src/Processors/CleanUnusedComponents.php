@@ -10,7 +10,7 @@ use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class CleanUnusedComponents
+class CleanUnusedComponents implements ProcessorInterface
 {
     use Concerns\CollectorTrait;
 
@@ -38,7 +38,7 @@ class CleanUnusedComponents
                 $usedRefs[$annotation->ref] = $annotation->ref;
             }
 
-            foreach (['allOf', 'anyOf', 'oneOff'] as $sub) {
+            foreach (['allOf', 'anyOf', 'oneOf'] as $sub) {
                 if (property_exists($annotation, $sub) && !Generator::isDefault($annotation->{$sub})) {
                     foreach ($annotation->{$sub} as $subElem) {
                         if (is_object($subElem) && property_exists($subElem, 'ref') && !Generator::isDefault($subElem->ref) && $subElem->ref !== null) {

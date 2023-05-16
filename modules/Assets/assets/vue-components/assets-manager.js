@@ -307,7 +307,7 @@ export default {
 
             <kiss-grid cols="2@s 5@m 6@xl" class="spotlight-group" gap="small" v-if="!loading && assets.length" match="true" hover="shadow">
 
-                    <kiss-card class="kiss-position-relative kiss-bgcolor-contrast" theme="bordered" :style="{borderColor: (selectedAsset && selectedAsset._id == asset._id && 'var(--kiss-color-primary)') || null}" v-for="asset in assets">
+                    <kiss-card class="kiss-position-relative kiss-bgcolor-contrast" theme="bordered" hover="shadow" :style="{borderColor: (selectedAsset && selectedAsset._id == asset._id && 'var(--kiss-color-primary)') || null}" v-for="asset in assets">
                         <div class="kiss-position-relative" :class="{'kiss-bgcolor-transparentimage': asset.type == 'image'}">
                             <canvas width="400" height="300"></canvas>
                             <div class="kiss-cover kiss-padding kiss-flex kiss-flex-middle kiss-flex-center">
@@ -328,15 +328,17 @@ export default {
 
         <div class="kiss-flex kiss-flex-middle kiss-margin-large-top" v-if="modal">
             <div class="kiss-flex kiss-flex-middle" v-if="!loading && count">
-                <div class="kiss-size-small">{{ count}} {{ count == 1 ? t('Item') : t('Items') }}</div>
-                <div class="kiss-margin-small-left kiss-overlay-input">
-                    <span class="kiss-badge kiss-badge-outline kiss-color-muted">{{ page }} / {{pages}}</span>
-                    <select v-model="page" @change="load(page)" v-if="pages > 1"><option v-for="p in pages" :value="p">{{ p }}</option></select>
-                </div>
-                <div class="kiss-margin-small-left kiss-size-small">
-                    <a class="kiss-margin-small-right" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
-                    <a v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
-                </div>
+                <app-pagination>
+                    <div class="kiss-color-muted">{{ count }} {{ count == 1 ? t('Item') : t('Items') }}</div>
+                    <a class="kiss-margin-small-left" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
+                    <div class="kiss-margin-small-left kiss-overlay-input" v-if="count > limit">
+                        <strong>{{ page }} &mdash; {{pages}}</strong>
+                        <select v-model="page" @change="load(page)" v-if="pages > 1">
+                            <option v-for="p in pages" :value="p">{{ p }}</option>
+                        </select>
+                    </div>
+                    <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
+                </app-pagination>
             </div>
             <div class="kiss-flex-1 kiss-margin-right"></div>
             <div class="kiss-button-group kiss-margin-right">
@@ -353,15 +355,17 @@ export default {
             <kiss-container>
                 <div class="kiss-flex kiss-flex-middle">
                     <div class="kiss-flex kiss-flex-middle" v-if="!loading && count">
-                        <div class="kiss-size-small">{{ count}} {{ count == 1 ? t('Item') : t('Items') }}</div>
-                        <div class="kiss-margin-small-left kiss-overlay-input">
-                            <span class="kiss-badge kiss-badge-outline kiss-color-muted">{{ page }} / {{pages}}</span>
-                            <select v-model="page" @change="load(page)" v-if="pages > 1"><option v-for="p in pages" :value="p">{{ p }}</option></select>
-                        </div>
-                        <div class="kiss-margin-small-left kiss-size-small">
-                            <a class="kiss-margin-small-right" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
-                            <a v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
-                        </div>
+                        <app-pagination>
+                            <div class="kiss-color-muted">{{ count }} {{ count == 1 ? t('Item') : t('Items') }}</div>
+                            <a class="kiss-margin-small-left" v-if="(page - 1) >= 1" @click="load(page - 1)">{{ t('Previous') }}</a>
+                            <div class="kiss-margin-small-left kiss-overlay-input" v-if="count > limit">
+                                <strong>{{ page }} &mdash; {{pages}}</strong>
+                                <select v-model="page" @change="load(page)" v-if="pages > 1">
+                                    <option v-for="p in pages" :value="p">{{ p }}</option>
+                                </select>
+                            </div>
+                            <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
+                        </app-pagination>
                     </div>
                     <div class="kiss-flex-1 kiss-margin-right"></div>
                     <div class="kiss-button-group">
@@ -373,7 +377,7 @@ export default {
         </app-actionbar>
 
         <teleport to="body">
-            <kiss-popoutmenu :open="actionAsset && 'true'" id="asset-menu-actions" @popoutmenuclose="toggleAssetActions(null)">
+            <kiss-popout :open="actionAsset && 'true'" @popoutclose="toggleAssetActions(null)">
                 <kiss-content>
                     <kiss-navlist class="kiss-margin">
                         <ul>
@@ -410,9 +414,9 @@ export default {
                         </ul>
                     </kiss-navlist>
                 </kiss-content>
-            </kiss-popoutmenu>
+            </kiss-popout>
 
-            <kiss-popoutmenu :open="actionFolder && 'true'" id="asset-folder-actions" @popoutmenuclose="toggleFolderActions(null)">
+            <kiss-popout :open="actionFolder && 'true'" @popoutclose="toggleFolderActions(null)">
                 <kiss-content>
                     <kiss-navlist class="kiss-margin">
                         <ul>
@@ -436,7 +440,7 @@ export default {
                         </ul>
                     </kiss-navlist>
                 </kiss-content>
-            </kiss-popoutmenu>
+            </kiss-popout>
 
         </teleport>
     `

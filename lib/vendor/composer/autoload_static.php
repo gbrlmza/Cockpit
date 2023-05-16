@@ -4,21 +4,21 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
+class ComposerStaticInit7664f6a98cbba47845afadcadc7d0442
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '7aed44d824e149ce152c0fb82af9379a' => __DIR__ . '/..' . '/colinodell/json5/src/global.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
     );
@@ -67,7 +67,9 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\Local\\' => 23,
             'League\\Flysystem\\' => 17,
+            'League\\ColorExtractor\\' => 22,
         ),
         'J' => 
         array (
@@ -86,13 +88,13 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         ),
         'D' => 
         array (
-            'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'DASPRiD\\Enum\\' => 13,
         ),
         'C' => 
         array (
+            'ColorThief\\' => 11,
             'ColinODell\\Json5\\' => 17,
         ),
         'B' => 
@@ -195,9 +197,17 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
+        'League\\Flysystem\\Local\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-local',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'League\\ColorExtractor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/color-extractor/src',
         ),
         'Jean85\\' => 
         array (
@@ -223,10 +233,6 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Doctrine\\Deprecations\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
-        ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/src',
@@ -239,6 +245,10 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         array (
             0 => __DIR__ . '/..' . '/dasprid/enum/src',
         ),
+        'ColorThief\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief',
+        ),
         'ColinODell\\Json5\\' => 
         array (
             0 => __DIR__ . '/..' . '/colinodell/json5/src',
@@ -247,10 +257,6 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         array (
             0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
-    );
-
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/league/color-extractor/src',
     );
 
     public static $prefixesPsr0 = array (
@@ -327,6 +333,21 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'BaconQrCode\\Writer' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Writer.php',
         'ColinODell\\Json5\\Json5Decoder' => __DIR__ . '/..' . '/colinodell/json5/src/Json5Decoder.php',
         'ColinODell\\Json5\\SyntaxError' => __DIR__ . '/..' . '/colinodell/json5/src/SyntaxError.php',
+        'ColorThief\\Color' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Color.php',
+        'ColorThief\\ColorThief' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/ColorThief.php',
+        'ColorThief\\Exception\\Exception' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Exception/Exception.php',
+        'ColorThief\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Exception/InvalidArgumentException.php',
+        'ColorThief\\Exception\\NotReadableException' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Exception/NotReadableException.php',
+        'ColorThief\\Exception\\NotSupportedException' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Exception/NotSupportedException.php',
+        'ColorThief\\Exception\\RuntimeException' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Exception/RuntimeException.php',
+        'ColorThief\\Image\\Adapter\\AbstractAdapter' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/Adapter/AbstractAdapter.php',
+        'ColorThief\\Image\\Adapter\\AdapterInterface' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/Adapter/AdapterInterface.php',
+        'ColorThief\\Image\\Adapter\\GdAdapter' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/Adapter/GdAdapter.php',
+        'ColorThief\\Image\\Adapter\\GmagickAdapter' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/Adapter/GmagickAdapter.php',
+        'ColorThief\\Image\\Adapter\\ImagickAdapter' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/Adapter/ImagickAdapter.php',
+        'ColorThief\\Image\\ImageLoader' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/ImageLoader.php',
+        'ColorThief\\PQueue' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/PQueue.php',
+        'ColorThief\\VBox' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/VBox.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DASPRiD\\Enum\\AbstractEnum' => __DIR__ . '/..' . '/dasprid/enum/src/AbstractEnum.php',
         'DASPRiD\\Enum\\EnumMap' => __DIR__ . '/..' . '/dasprid/enum/src/EnumMap.php',
@@ -349,22 +370,16 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'Doctrine\\Common\\Annotations\\Annotation\\NamedArgumentConstructor' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/Annotation/NamedArgumentConstructor.php',
         'Doctrine\\Common\\Annotations\\Annotation\\Required' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/Annotation/Required.php',
         'Doctrine\\Common\\Annotations\\Annotation\\Target' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/Annotation/Target.php',
-        'Doctrine\\Common\\Annotations\\CachedReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/CachedReader.php',
         'Doctrine\\Common\\Annotations\\DocLexer' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/DocLexer.php',
         'Doctrine\\Common\\Annotations\\DocParser' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
-        'Doctrine\\Common\\Annotations\\FileCacheReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/FileCacheReader.php',
         'Doctrine\\Common\\Annotations\\ImplicitlyIgnoredAnnotationNames' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/ImplicitlyIgnoredAnnotationNames.php',
         'Doctrine\\Common\\Annotations\\IndexedReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/IndexedReader.php',
-        'Doctrine\\Common\\Annotations\\NamedArgumentConstructorAnnotation' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/NamedArgumentConstructorAnnotation.php',
         'Doctrine\\Common\\Annotations\\PhpParser' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/PhpParser.php',
         'Doctrine\\Common\\Annotations\\PsrCachedReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/PsrCachedReader.php',
         'Doctrine\\Common\\Annotations\\Reader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/Reader.php',
-        'Doctrine\\Common\\Annotations\\SimpleAnnotationReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/SimpleAnnotationReader.php',
         'Doctrine\\Common\\Annotations\\TokenParser' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/TokenParser.php',
         'Doctrine\\Common\\Lexer\\AbstractLexer' => __DIR__ . '/..' . '/doctrine/lexer/src/AbstractLexer.php',
         'Doctrine\\Common\\Lexer\\Token' => __DIR__ . '/..' . '/doctrine/lexer/src/Token.php',
-        'Doctrine\\Deprecations\\Deprecation' => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations/Deprecation.php',
-        'Doctrine\\Deprecations\\PHPUnit\\VerifyDeprecations' => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations/PHPUnit/VerifyDeprecations.php',
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
         'Firebase\\JWT\\CachedKeySet' => __DIR__ . '/..' . '/firebase/php-jwt/src/CachedKeySet.php',
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
@@ -374,14 +389,16 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'GraphQL\\Deferred' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Deferred.php',
         'GraphQL\\Error\\ClientAware' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/ClientAware.php',
+        'GraphQL\\Error\\CoercionError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/CoercionError.php',
         'GraphQL\\Error\\DebugFlag' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/DebugFlag.php',
         'GraphQL\\Error\\Error' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/Error.php',
         'GraphQL\\Error\\FormattedError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/FormattedError.php',
         'GraphQL\\Error\\InvariantViolation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/InvariantViolation.php',
+        'GraphQL\\Error\\ProvidesExtensions' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/ProvidesExtensions.php',
+        'GraphQL\\Error\\SerializationError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/SerializationError.php',
         'GraphQL\\Error\\SyntaxError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/SyntaxError.php',
         'GraphQL\\Error\\UserError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/UserError.php',
         'GraphQL\\Error\\Warning' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Error/Warning.php',
-        'GraphQL\\Exception\\InvalidArgument' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Exception/InvalidArgument.php',
         'GraphQL\\Executor\\ExecutionContext' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/ExecutionContext.php',
         'GraphQL\\Executor\\ExecutionResult' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/ExecutionResult.php',
         'GraphQL\\Executor\\Executor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Executor.php',
@@ -394,12 +411,6 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Executor\\Promise\\PromiseAdapter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Promise/PromiseAdapter.php',
         'GraphQL\\Executor\\ReferenceExecutor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/ReferenceExecutor.php',
         'GraphQL\\Executor\\Values' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Values.php',
-        'GraphQL\\Experimental\\Executor\\Collector' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/Collector.php',
-        'GraphQL\\Experimental\\Executor\\CoroutineContext' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/CoroutineContext.php',
-        'GraphQL\\Experimental\\Executor\\CoroutineContextShared' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/CoroutineContextShared.php',
-        'GraphQL\\Experimental\\Executor\\CoroutineExecutor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/CoroutineExecutor.php',
-        'GraphQL\\Experimental\\Executor\\Runtime' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/Runtime.php',
-        'GraphQL\\Experimental\\Executor\\Strand' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Experimental/Executor/Strand.php',
         'GraphQL\\GraphQL' => __DIR__ . '/..' . '/webonyx/graphql-php/src/GraphQL.php',
         'GraphQL\\Language\\AST\\ArgumentNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/ArgumentNode.php',
         'GraphQL\\Language\\AST\\BooleanValueNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/BooleanValueNode.php',
@@ -444,7 +455,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Language\\AST\\ScalarTypeDefinitionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/ScalarTypeDefinitionNode.php',
         'GraphQL\\Language\\AST\\ScalarTypeExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/ScalarTypeExtensionNode.php',
         'GraphQL\\Language\\AST\\SchemaDefinitionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/SchemaDefinitionNode.php',
-        'GraphQL\\Language\\AST\\SchemaTypeExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/SchemaTypeExtensionNode.php',
+        'GraphQL\\Language\\AST\\SchemaExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/SchemaExtensionNode.php',
         'GraphQL\\Language\\AST\\SelectionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/SelectionNode.php',
         'GraphQL\\Language\\AST\\SelectionSetNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/SelectionSetNode.php',
         'GraphQL\\Language\\AST\\StringValueNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/StringValueNode.php',
@@ -452,11 +463,13 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Language\\AST\\TypeExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/TypeExtensionNode.php',
         'GraphQL\\Language\\AST\\TypeNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/TypeNode.php',
         'GraphQL\\Language\\AST\\TypeSystemDefinitionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/TypeSystemDefinitionNode.php',
+        'GraphQL\\Language\\AST\\TypeSystemExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/TypeSystemExtensionNode.php',
         'GraphQL\\Language\\AST\\UnionTypeDefinitionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/UnionTypeDefinitionNode.php',
         'GraphQL\\Language\\AST\\UnionTypeExtensionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/UnionTypeExtensionNode.php',
         'GraphQL\\Language\\AST\\ValueNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/ValueNode.php',
         'GraphQL\\Language\\AST\\VariableDefinitionNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/VariableDefinitionNode.php',
         'GraphQL\\Language\\AST\\VariableNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/AST/VariableNode.php',
+        'GraphQL\\Language\\BlockString' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/BlockString.php',
         'GraphQL\\Language\\DirectiveLocation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/DirectiveLocation.php',
         'GraphQL\\Language\\Lexer' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/Lexer.php',
         'GraphQL\\Language\\Parser' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/Parser.php',
@@ -466,24 +479,31 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Language\\Token' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/Token.php',
         'GraphQL\\Language\\Visitor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/Visitor.php',
         'GraphQL\\Language\\VisitorOperation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorOperation.php',
+        'GraphQL\\Language\\VisitorRemoveNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorRemoveNode.php',
+        'GraphQL\\Language\\VisitorSkipNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorSkipNode.php',
+        'GraphQL\\Language\\VisitorStop' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorStop.php',
         'GraphQL\\Server\\Helper' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Helper.php',
         'GraphQL\\Server\\OperationParams' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/OperationParams.php',
         'GraphQL\\Server\\RequestError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/RequestError.php',
         'GraphQL\\Server\\ServerConfig' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/ServerConfig.php',
         'GraphQL\\Server\\StandardServer' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/StandardServer.php',
         'GraphQL\\Type\\Definition\\AbstractType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/AbstractType.php',
+        'GraphQL\\Type\\Definition\\Argument' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/Argument.php',
         'GraphQL\\Type\\Definition\\BooleanType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/BooleanType.php',
         'GraphQL\\Type\\Definition\\CompositeType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/CompositeType.php',
         'GraphQL\\Type\\Definition\\CustomScalarType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/CustomScalarType.php',
+        'GraphQL\\Type\\Definition\\Deprecated' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/Deprecated.php',
+        'GraphQL\\Type\\Definition\\Description' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/Description.php',
         'GraphQL\\Type\\Definition\\Directive' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/Directive.php',
         'GraphQL\\Type\\Definition\\EnumType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/EnumType.php',
         'GraphQL\\Type\\Definition\\EnumValueDefinition' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/EnumValueDefinition.php',
-        'GraphQL\\Type\\Definition\\FieldArgument' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/FieldArgument.php',
         'GraphQL\\Type\\Definition\\FieldDefinition' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/FieldDefinition.php',
         'GraphQL\\Type\\Definition\\FloatType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/FloatType.php',
         'GraphQL\\Type\\Definition\\HasFieldsType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/HasFieldsType.php',
+        'GraphQL\\Type\\Definition\\HasFieldsTypeImplementation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/HasFieldsTypeImplementation.php',
         'GraphQL\\Type\\Definition\\IDType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/IDType.php',
         'GraphQL\\Type\\Definition\\ImplementingType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ImplementingType.php',
+        'GraphQL\\Type\\Definition\\ImplementingTypeImplementation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ImplementingTypeImplementation.php',
         'GraphQL\\Type\\Definition\\InputObjectField' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/InputObjectField.php',
         'GraphQL\\Type\\Definition\\InputObjectType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/InputObjectType.php',
         'GraphQL\\Type\\Definition\\InputType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/InputType.php',
@@ -492,16 +512,17 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Type\\Definition\\LeafType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/LeafType.php',
         'GraphQL\\Type\\Definition\\ListOfType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ListOfType.php',
         'GraphQL\\Type\\Definition\\NamedType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/NamedType.php',
+        'GraphQL\\Type\\Definition\\NamedTypeImplementation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/NamedTypeImplementation.php',
         'GraphQL\\Type\\Definition\\NonNull' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/NonNull.php',
         'GraphQL\\Type\\Definition\\NullableType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/NullableType.php',
         'GraphQL\\Type\\Definition\\ObjectType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ObjectType.php',
         'GraphQL\\Type\\Definition\\OutputType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/OutputType.php',
+        'GraphQL\\Type\\Definition\\PhpEnumType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/PhpEnumType.php',
         'GraphQL\\Type\\Definition\\QueryPlan' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/QueryPlan.php',
         'GraphQL\\Type\\Definition\\ResolveInfo' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ResolveInfo.php',
         'GraphQL\\Type\\Definition\\ScalarType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/ScalarType.php',
         'GraphQL\\Type\\Definition\\StringType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/StringType.php',
         'GraphQL\\Type\\Definition\\Type' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/Type.php',
-        'GraphQL\\Type\\Definition\\TypeWithFields' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/TypeWithFields.php',
         'GraphQL\\Type\\Definition\\UnionType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/UnionType.php',
         'GraphQL\\Type\\Definition\\UnmodifiedType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/UnmodifiedType.php',
         'GraphQL\\Type\\Definition\\UnresolvedFieldDefinition' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Definition/UnresolvedFieldDefinition.php',
@@ -514,21 +535,23 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Type\\Validation\\InputObjectCircularRefs' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Type/Validation/InputObjectCircularRefs.php',
         'GraphQL\\Utils\\AST' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/AST.php',
         'GraphQL\\Utils\\ASTDefinitionBuilder' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/ASTDefinitionBuilder.php',
-        'GraphQL\\Utils\\BlockString' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/BlockString.php',
         'GraphQL\\Utils\\BreakingChangesFinder' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/BreakingChangesFinder.php',
         'GraphQL\\Utils\\BuildClientSchema' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/BuildClientSchema.php',
         'GraphQL\\Utils\\BuildSchema' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/BuildSchema.php',
         'GraphQL\\Utils\\InterfaceImplementations' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/InterfaceImplementations.php',
+        'GraphQL\\Utils\\LazyException' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/LazyException.php',
+        'GraphQL\\Utils\\LexicalDistance' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/LexicalDistance.php',
         'GraphQL\\Utils\\MixedStore' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/MixedStore.php',
         'GraphQL\\Utils\\PairSet' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/PairSet.php',
+        'GraphQL\\Utils\\PhpDoc' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/PhpDoc.php',
         'GraphQL\\Utils\\SchemaExtender' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/SchemaExtender.php',
         'GraphQL\\Utils\\SchemaPrinter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/SchemaPrinter.php',
         'GraphQL\\Utils\\TypeComparators' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/TypeComparators.php',
         'GraphQL\\Utils\\TypeInfo' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/TypeInfo.php',
         'GraphQL\\Utils\\Utils' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/Utils.php',
         'GraphQL\\Utils\\Value' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Utils/Value.php',
-        'GraphQL\\Validator\\ASTValidationContext' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/ASTValidationContext.php',
         'GraphQL\\Validator\\DocumentValidator' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/DocumentValidator.php',
+        'GraphQL\\Validator\\QueryValidationContext' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/QueryValidationContext.php',
         'GraphQL\\Validator\\Rules\\CustomValidationRule' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/CustomValidationRule.php',
         'GraphQL\\Validator\\Rules\\DisableIntrospection' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/DisableIntrospection.php',
         'GraphQL\\Validator\\Rules\\ExecutableDefinitions' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ExecutableDefinitions.php',
@@ -547,6 +570,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Validator\\Rules\\NoUnusedVariables' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/NoUnusedVariables.php',
         'GraphQL\\Validator\\Rules\\OverlappingFieldsCanBeMerged' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/OverlappingFieldsCanBeMerged.php',
         'GraphQL\\Validator\\Rules\\PossibleFragmentSpreads' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/PossibleFragmentSpreads.php',
+        'GraphQL\\Validator\\Rules\\PossibleTypeExtensions' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/PossibleTypeExtensions.php',
         'GraphQL\\Validator\\Rules\\ProvidedRequiredArguments' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ProvidedRequiredArguments.php',
         'GraphQL\\Validator\\Rules\\ProvidedRequiredArgumentsOnDirectives' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ProvidedRequiredArgumentsOnDirectives.php',
         'GraphQL\\Validator\\Rules\\QueryComplexity' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/QueryComplexity.php',
@@ -554,11 +578,17 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'GraphQL\\Validator\\Rules\\QuerySecurityRule' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/QuerySecurityRule.php',
         'GraphQL\\Validator\\Rules\\ScalarLeafs' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ScalarLeafs.php',
         'GraphQL\\Validator\\Rules\\SingleFieldSubscription' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/SingleFieldSubscription.php',
+        'GraphQL\\Validator\\Rules\\UniqueArgumentDefinitionNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueArgumentDefinitionNames.php',
         'GraphQL\\Validator\\Rules\\UniqueArgumentNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueArgumentNames.php',
+        'GraphQL\\Validator\\Rules\\UniqueDirectiveNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueDirectiveNames.php',
         'GraphQL\\Validator\\Rules\\UniqueDirectivesPerLocation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueDirectivesPerLocation.php',
+        'GraphQL\\Validator\\Rules\\UniqueEnumValueNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueEnumValueNames.php',
+        'GraphQL\\Validator\\Rules\\UniqueFieldDefinitionNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueFieldDefinitionNames.php',
         'GraphQL\\Validator\\Rules\\UniqueFragmentNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueFragmentNames.php',
         'GraphQL\\Validator\\Rules\\UniqueInputFieldNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueInputFieldNames.php',
         'GraphQL\\Validator\\Rules\\UniqueOperationNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueOperationNames.php',
+        'GraphQL\\Validator\\Rules\\UniqueOperationTypes' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueOperationTypes.php',
+        'GraphQL\\Validator\\Rules\\UniqueTypeNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueTypeNames.php',
         'GraphQL\\Validator\\Rules\\UniqueVariableNames' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/UniqueVariableNames.php',
         'GraphQL\\Validator\\Rules\\ValidationRule' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ValidationRule.php',
         'GraphQL\\Validator\\Rules\\ValuesOfCorrectType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Validator/Rules/ValuesOfCorrectType.php',
@@ -658,9 +688,9 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'Jean85\\PrettyVersions' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/PrettyVersions.php',
         'Jean85\\Version' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Version.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
-        'League\\ColorExtractor\\Color' => __DIR__ . '/..' . '/league/color-extractor/src/League/ColorExtractor/Color.php',
-        'League\\ColorExtractor\\ColorExtractor' => __DIR__ . '/..' . '/league/color-extractor/src/League/ColorExtractor/ColorExtractor.php',
-        'League\\ColorExtractor\\Palette' => __DIR__ . '/..' . '/league/color-extractor/src/League/ColorExtractor/Palette.php',
+        'League\\ColorExtractor\\Color' => __DIR__ . '/..' . '/league/color-extractor/src/Color.php',
+        'League\\ColorExtractor\\ColorExtractor' => __DIR__ . '/..' . '/league/color-extractor/src/ColorExtractor.php',
+        'League\\ColorExtractor\\Palette' => __DIR__ . '/..' . '/league/color-extractor/src/Palette.php',
         'League\\Flysystem\\CalculateChecksumFromStream' => __DIR__ . '/..' . '/league/flysystem/src/CalculateChecksumFromStream.php',
         'League\\Flysystem\\ChecksumAlgoIsNotSupported' => __DIR__ . '/..' . '/league/flysystem/src/ChecksumAlgoIsNotSupported.php',
         'League\\Flysystem\\ChecksumProvider' => __DIR__ . '/..' . '/league/flysystem/src/ChecksumProvider.php',
@@ -678,8 +708,8 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'League\\Flysystem\\FilesystemWriter' => __DIR__ . '/..' . '/league/flysystem/src/FilesystemWriter.php',
         'League\\Flysystem\\InvalidStreamProvided' => __DIR__ . '/..' . '/league/flysystem/src/InvalidStreamProvided.php',
         'League\\Flysystem\\InvalidVisibilityProvided' => __DIR__ . '/..' . '/league/flysystem/src/InvalidVisibilityProvided.php',
-        'League\\Flysystem\\Local\\FallbackMimeTypeDetector' => __DIR__ . '/..' . '/league/flysystem/src/Local/FallbackMimeTypeDetector.php',
-        'League\\Flysystem\\Local\\LocalFilesystemAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Local/LocalFilesystemAdapter.php',
+        'League\\Flysystem\\Local\\FallbackMimeTypeDetector' => __DIR__ . '/..' . '/league/flysystem-local/FallbackMimeTypeDetector.php',
+        'League\\Flysystem\\Local\\LocalFilesystemAdapter' => __DIR__ . '/..' . '/league/flysystem-local/LocalFilesystemAdapter.php',
         'League\\Flysystem\\MountManager' => __DIR__ . '/..' . '/league/flysystem/src/MountManager.php',
         'League\\Flysystem\\PathNormalizer' => __DIR__ . '/..' . '/league/flysystem/src/PathNormalizer.php',
         'League\\Flysystem\\PathPrefixer' => __DIR__ . '/..' . '/league/flysystem/src/PathPrefixer.php',
@@ -709,6 +739,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'League\\Flysystem\\UnixVisibility\\PortableVisibilityConverter' => __DIR__ . '/..' . '/league/flysystem/src/UnixVisibility/PortableVisibilityConverter.php',
         'League\\Flysystem\\UnixVisibility\\VisibilityConverter' => __DIR__ . '/..' . '/league/flysystem/src/UnixVisibility/VisibilityConverter.php',
         'League\\Flysystem\\UnreadableFileEncountered' => __DIR__ . '/..' . '/league/flysystem/src/UnreadableFileEncountered.php',
+        'League\\Flysystem\\UrlGeneration\\ChainedPublicUrlGenerator' => __DIR__ . '/..' . '/league/flysystem/src/UrlGeneration/ChainedPublicUrlGenerator.php',
         'League\\Flysystem\\UrlGeneration\\PrefixPublicUrlGenerator' => __DIR__ . '/..' . '/league/flysystem/src/UrlGeneration/PrefixPublicUrlGenerator.php',
         'League\\Flysystem\\UrlGeneration\\PublicUrlGenerator' => __DIR__ . '/..' . '/league/flysystem/src/UrlGeneration/PublicUrlGenerator.php',
         'League\\Flysystem\\UrlGeneration\\ShardedPrefixPublicUrlGenerator' => __DIR__ . '/..' . '/league/flysystem/src/UrlGeneration/ShardedPrefixPublicUrlGenerator.php',
@@ -821,6 +852,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Annotations\\Attachable' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Attachable.php',
         'OpenApi\\Annotations\\Components' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Components.php',
         'OpenApi\\Annotations\\Contact' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Contact.php',
+        'OpenApi\\Annotations\\CookieParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/CookieParameter.php',
         'OpenApi\\Annotations\\Delete' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Delete.php',
         'OpenApi\\Annotations\\Discriminator' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Discriminator.php',
         'OpenApi\\Annotations\\Examples' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Examples.php',
@@ -829,6 +861,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Annotations\\Get' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Get.php',
         'OpenApi\\Annotations\\Head' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Head.php',
         'OpenApi\\Annotations\\Header' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Header.php',
+        'OpenApi\\Annotations\\HeaderParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/HeaderParameter.php',
         'OpenApi\\Annotations\\Info' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Info.php',
         'OpenApi\\Annotations\\Items' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Items.php',
         'OpenApi\\Annotations\\JsonContent' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/JsonContent.php',
@@ -845,6 +878,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Annotations\\Post' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Post.php',
         'OpenApi\\Annotations\\Property' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Property.php',
         'OpenApi\\Annotations\\Put' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Put.php',
+        'OpenApi\\Annotations\\QueryParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/QueryParameter.php',
         'OpenApi\\Annotations\\RequestBody' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/RequestBody.php',
         'OpenApi\\Annotations\\Response' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Response.php',
         'OpenApi\\Annotations\\Schema' => __DIR__ . '/..' . '/zircote/swagger-php/src/Annotations/Schema.php',
@@ -859,6 +893,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Attributes\\Attachable' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Attachable.php',
         'OpenApi\\Attributes\\Components' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Components.php',
         'OpenApi\\Attributes\\Contact' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Contact.php',
+        'OpenApi\\Attributes\\CookieParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/CookieParameter.php',
         'OpenApi\\Attributes\\Delete' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Delete.php',
         'OpenApi\\Attributes\\Discriminator' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Discriminator.php',
         'OpenApi\\Attributes\\Examples' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Examples.php',
@@ -867,6 +902,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Attributes\\Get' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Get.php',
         'OpenApi\\Attributes\\Head' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Head.php',
         'OpenApi\\Attributes\\Header' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Header.php',
+        'OpenApi\\Attributes\\HeaderParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/HeaderParameter.php',
         'OpenApi\\Attributes\\Info' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Info.php',
         'OpenApi\\Attributes\\Items' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Items.php',
         'OpenApi\\Attributes\\JsonContent' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/JsonContent.php',
@@ -884,6 +920,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Attributes\\Post' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Post.php',
         'OpenApi\\Attributes\\Property' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Property.php',
         'OpenApi\\Attributes\\Put' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Put.php',
+        'OpenApi\\Attributes\\QueryParameter' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/QueryParameter.php',
         'OpenApi\\Attributes\\RequestBody' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/RequestBody.php',
         'OpenApi\\Attributes\\Response' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Response.php',
         'OpenApi\\Attributes\\Schema' => __DIR__ . '/..' . '/zircote/swagger-php/src/Attributes/Schema.php',
@@ -908,6 +945,7 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Processors\\Concerns\\CollectorTrait' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/Concerns/CollectorTrait.php',
         'OpenApi\\Processors\\Concerns\\DocblockTrait' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/Concerns/DocblockTrait.php',
         'OpenApi\\Processors\\Concerns\\MergePropertiesTrait' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/Concerns/MergePropertiesTrait.php',
+        'OpenApi\\Processors\\Concerns\\RefTrait' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/Concerns/RefTrait.php',
         'OpenApi\\Processors\\Concerns\\TypesTrait' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/Concerns/TypesTrait.php',
         'OpenApi\\Processors\\DocBlockDescriptions' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/DocBlockDescriptions.php',
         'OpenApi\\Processors\\ExpandClasses' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/ExpandClasses.php',
@@ -919,8 +957,10 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
         'OpenApi\\Processors\\MergeJsonContent' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/MergeJsonContent.php',
         'OpenApi\\Processors\\MergeXmlContent' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/MergeXmlContent.php',
         'OpenApi\\Processors\\OperationId' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/OperationId.php',
+        'OpenApi\\Processors\\ProcessorInterface' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/ProcessorInterface.php',
         'OpenApi\\Serializer' => __DIR__ . '/..' . '/zircote/swagger-php/src/Serializer.php',
         'OpenApi\\Util' => __DIR__ . '/..' . '/zircote/swagger-php/src/Util.php',
+        'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
         'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
         'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
         'PHPMailer\\PHPMailer\\OAuthTokenProvider' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuthTokenProvider.php',
@@ -1169,11 +1209,10 @@ class ComposerStaticInit00d1f9b6bf944011268c41c2b4662055
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit00d1f9b6bf944011268c41c2b4662055::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit00d1f9b6bf944011268c41c2b4662055::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInit00d1f9b6bf944011268c41c2b4662055::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit00d1f9b6bf944011268c41c2b4662055::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit00d1f9b6bf944011268c41c2b4662055::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7664f6a98cbba47845afadcadc7d0442::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7664f6a98cbba47845afadcadc7d0442::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit7664f6a98cbba47845afadcadc7d0442::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit7664f6a98cbba47845afadcadc7d0442::$classMap;
 
         }, null, ClassLoader::class);
     }

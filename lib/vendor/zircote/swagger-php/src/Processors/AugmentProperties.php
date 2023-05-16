@@ -14,9 +14,10 @@ use OpenApi\Generator;
 /**
  * Use the property context to extract useful information and inject that into the annotation.
  */
-class AugmentProperties
+class AugmentProperties implements ProcessorInterface
 {
     use Concerns\DocblockTrait;
+    use Concerns\RefTrait;
     use Concerns\TypesTrait;
 
     public function __invoke(Analysis $analysis)
@@ -45,40 +46,32 @@ class AugmentProperties
                 continue;
             }
 
-            $comment = str_replace("\r\n", "\n", (string) $context->comment);
-            preg_match('/@var\s+(?<type>[^\s]+)([ \t])?(?<description>.+)?$/im', $comment, $varMatches);
+            $typeAndDescription = $this->extractVarTypeAndDescription((string) $context->comment);
 
             if (Generator::isDefault($property->type)) {
-                $this->augmentType($analysis, $property, $context, $refs, $varMatches);
+                $this->augmentType($analysis, $property, $context, $refs, $typeAndDescription['type']);
             } else {
                 $this->mapNativeType($property, $property->type);
             }
 
-            if (Generator::isDefault($property->description) && isset($varMatches['description'])) {
-                $property->description = trim($varMatches['description']);
+            if (Generator::isDefault($property->description) && $typeAndDescription['description']) {
+                $property->description = trim($typeAndDescription['description']);
             }
             if (Generator::isDefault($property->description) && $this->isRoot($property)) {
                 $property->description = $this->extractContent($context->comment);
             }
 
-            if (Generator::isDefault($property->example) && preg_match('/@example\s+([ \t])?(?<example>.+)?$/im', $comment, $varMatches)) {
-                $property->example = $varMatches['example'];
+            if (Generator::isDefault($property->example) && ($example = $this->extractExampleDescription((string) $context->comment))) {
+                $property->example = $example;
             }
         }
     }
 
-    protected function toRefKey(Context $context, ?string $name): string
-    {
-        $fqn = strtolower($context->fullyQualifiedName($name));
-
-        return ltrim($fqn, '\\');
-    }
-
-    protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, array $refs, array $varMatches): void
+    protected function augmentType(Analysis $analysis, OA\Property $property, Context $context, array $refs, ?string $varType): void
     {
         // docblock typehints
-        if (isset($varMatches['type'])) {
-            $allTypes = strtolower(trim($varMatches['type']));
+        if ($varType) {
+            $allTypes = strtolower(trim($varType));
 
             if ($this->isNullable($allTypes) && Generator::isDefault($property->nullable)) {
                 $property->nullable = true;
@@ -97,7 +90,7 @@ class AugmentProperties
             }
 
             // ok, so we possibly have a type or ref
-            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && $property->nullable) {
+            if (!Generator::isDefault($property->ref) && $typeMatches[2] === '' && !Generator::isDefault($property->nullable) && $property->nullable) {
                 $refKey = $this->toRefKey($context, $type);
                 $property->oneOf = [
                     $schema = new OA\Schema([

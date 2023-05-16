@@ -82,6 +82,11 @@ class Users extends App {
             return $this->stop(['error' => 'User data is missing'], 412);
         }
 
+        // don't allow to change role if not allowed
+        if (isset($user['role']) && !$this->isAllowed('app/users/manage')) {
+            unset($user['role']);
+        }
+
         $user['_modified'] = time();
         $isUpdate = isset($user['_id']);
 
@@ -213,6 +218,10 @@ class Users extends App {
         }
 
         foreach ($users as &$user) {
+
+            // remove 2FA settings
+            unset($user['twofa']);
+
             $this->app->trigger('app.user.disguise', [&$user]);
         }
 
@@ -236,10 +245,14 @@ class Users extends App {
 
         $languages = [['i18n' => 'en', 'language' => 'English']];
 
-        foreach ($this->app->helper('fs')->ls('*.php', '#config:i18n/App') as $file) {
+        foreach ($this->app->helper('fs')->ls('#config:i18n') as $dir) {
 
-            $lang     = include($file->getRealPath());
-            $i18n     = $file->getBasename('.php');
+            if (!$dir->isDir() || $dir->isDot() || !file_exists($dir->getRealPath().'/App.php')) {
+                continue;
+            }
+
+            $lang     = include($dir->getRealPath().'/App.php');
+            $i18n     = $dir->getBasename();
             $language = $lang['@meta']['language'] ?? $i18n;
 
             $languages[] = ['i18n' => $i18n, 'language'=> $language];

@@ -12,6 +12,7 @@ use OpenApi\Generator;
 class Schema extends \OpenApi\Annotations\Schema
 {
     /**
+     * @param string|class-string|object|null                 $ref
      * @param string[]                                        $required
      * @param Property[]                                      $properties
      * @param int|float                                       $maximum
@@ -30,6 +31,8 @@ class Schema extends \OpenApi\Annotations\Schema
         ?string $schema = null,
         ?string $title = null,
         ?string $description = null,
+        ?int $maxProperties = null,
+        ?int $minProperties = null,
         ?array $required = null,
         ?array $properties = null,
         ?string $type = null,
@@ -70,6 +73,8 @@ class Schema extends \OpenApi\Annotations\Schema
             'schema' => $schema ?? Generator::UNDEFINED,
             'title' => $title ?? Generator::UNDEFINED,
             'description' => $description ?? Generator::UNDEFINED,
+            'maxProperties' => $maxProperties ?? Generator::UNDEFINED,
+            'minProperties' => $minProperties ?? Generator::UNDEFINED,
             'required' => $required ?? Generator::UNDEFINED,
             'properties' => $properties ?? Generator::UNDEFINED,
             'type' => $type ?? Generator::UNDEFINED,

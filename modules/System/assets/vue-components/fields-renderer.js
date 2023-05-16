@@ -196,7 +196,7 @@ let FieldRenderer = {
                         <div class="kiss-flex-1 kiss-margin-left">
                             <span class="kiss-size-xsmall kiss-color-muted kiss-text-upper">{{ fieldItem.field.type }}</span>
                             <kiss-row class="kiss-margin-xsmall-top kiss-flex-middle">
-                                <div class="kiss-size-4 kiss-text-bold kiss-flex-1">{{ fieldItem.create ? t('Add item'):t('Edit item') }}</div>
+                                <div class="kiss-size-4 kiss-text-bold kiss-flex-1">{{ fieldItem.create ? t('Add item'):t('Update item') }}</div>
                             </kiss-row>
                         </div>
                     </div>
@@ -210,7 +210,7 @@ let FieldRenderer = {
                             {{ t('Cancel') }}
                         </a>
                         <button class="kiss-button kiss-button-primary" @click="saveFieldItem">
-                            <span v-if="!fieldItem.create">{{ t('Edit item') }}</span>
+                            <span v-if="!fieldItem.create">{{ t('Update item') }}</span>
                             <span v-if="fieldItem.create">{{ t('Add item') }}</span>
                         </button>
                     </div>
@@ -373,7 +373,7 @@ export default {
             }
 
             try {
-                return field.condition(this.val);
+                return field.condition(JSON.parse(JSON.stringify(this.val)));
             } catch(e) {}
 
             return true;
@@ -397,7 +397,7 @@ export default {
                 </select>
             </kiss-card>
 
-            <app-fieldcontainer class="kiss-margin" v-for="field in visibleFields">
+            <app-fieldcontainer class="kiss-margin" :class="{'kiss-disabled': field.opts && field.opts.readonly}" v-for="field in visibleFields">
                 <div>
                     <div class="kiss-flex kiss-flex-middle">
                         <label class="fields-renderer-field kiss-text-capitalize kiss-flex kiss-flex-middle kiss-flex-1">
@@ -405,7 +405,7 @@ export default {
                             <icon class="kiss-size-5 kiss-color-muted kiss-margin-xsmall-left" v-if="field.i18n && locales.length" :title="t('Localized')">language</icon>
                             <icon class="kiss-size-5 kiss-color-danger kiss-margin-xsmall-left" v-if="field.required" :title="t('Required')">trip_origin</icon>
                         </label>
-                        <a class="app-fieldcontainer-visible-hover kiss-margin-left" :class="{'kiss-color-muted': nested}" @click="clear(field, val)" :aria-label="t('Clear') + ': ' + (field.label || field.name)" kiss-tooltip="right"><icon>backspace</icon></a>
+                        <a class="app-fieldcontainer-visible-hover kiss-margin-left" :class="{'kiss-color-muted': nested}" @click="clear(field, val)" :aria-label="t('Clear') + ': ' + (field.label || field.name)" kiss-tooltip="right" v-if="field.opts && !field.opts.readonly"><icon>backspace</icon></a>
                     </div>
                 </div>
                 <div class="kiss-color-muted kiss-size-xsmall" v-if="field.info">{{ field.info }}</div>
