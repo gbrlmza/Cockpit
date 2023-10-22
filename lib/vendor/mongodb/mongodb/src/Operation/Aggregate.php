@@ -38,13 +38,13 @@ use function is_integer;
 use function is_object;
 use function is_string;
 use function MongoDB\create_field_path_type_map;
+use function MongoDB\is_document;
 use function MongoDB\is_last_pipeline_operator_write;
-use function sprintf;
+use function MongoDB\is_pipeline;
 
 /**
  * Operation for the aggregate command.
  *
- * @api
  * @see \MongoDB\Collection::aggregate()
  * @see https://mongodb.com/docs/manual/reference/command/aggregate/
  */
@@ -132,24 +132,14 @@ class Aggregate implements Executable, Explainable
      *
      * @param string      $databaseName   Database name
      * @param string|null $collectionName Collection name
-     * @param array       $pipeline       List of pipeline operations
+     * @param array       $pipeline       Aggregation pipeline
      * @param array       $options        Command options
      * @throws InvalidArgumentException for parameter/option parsing errors
      */
     public function __construct(string $databaseName, ?string $collectionName, array $pipeline, array $options = [])
     {
-        $expectedIndex = 0;
-
-        foreach ($pipeline as $i => $operation) {
-            if ($i !== $expectedIndex) {
-                throw new InvalidArgumentException(sprintf('$pipeline is not a list (unexpected index: "%s")', $i));
-            }
-
-            if (! is_array($operation) && ! is_object($operation)) {
-                throw InvalidArgumentException::invalidType(sprintf('$pipeline[%d]', $i), $operation, 'array or object');
-            }
-
-            $expectedIndex += 1;
+        if (! is_pipeline($pipeline, true /* allowEmpty */)) {
+            throw new InvalidArgumentException('$pipeline is not a valid aggregation pipeline');
         }
 
         $options += ['useCursor' => true];
@@ -166,8 +156,8 @@ class Aggregate implements Executable, Explainable
             throw InvalidArgumentException::invalidType('"bypassDocumentValidation" option', $options['bypassDocumentValidation'], 'boolean');
         }
 
-        if (isset($options['collation']) && ! is_array($options['collation']) && ! is_object($options['collation'])) {
-            throw InvalidArgumentException::invalidType('"collation" option', $options['collation'], 'array or object');
+        if (isset($options['collation']) && ! is_document($options['collation'])) {
+            throw InvalidArgumentException::expectedDocumentType('"collation" option', $options['collation']);
         }
 
         if (isset($options['explain']) && ! is_bool($options['explain'])) {
@@ -178,8 +168,8 @@ class Aggregate implements Executable, Explainable
             throw InvalidArgumentException::invalidType('"hint" option', $options['hint'], 'string or array or object');
         }
 
-        if (isset($options['let']) && ! is_array($options['let']) && ! is_object($options['let'])) {
-            throw InvalidArgumentException::invalidType('"let" option', $options['let'], ['array', 'object']);
+        if (isset($options['let']) && ! is_document($options['let'])) {
+            throw InvalidArgumentException::expectedDocumentType('"let" option', $options['let']);
         }
 
         if (isset($options['maxAwaitTimeMS']) && ! is_integer($options['maxAwaitTimeMS'])) {
@@ -307,9 +297,16 @@ class Aggregate implements Executable, Explainable
      * @see Explainable::getCommandDocument()
      * @return array
      */
-    public function getCommandDocument(Server $server)
+    public function getCommandDocument()
     {
-        return $this->createCommandDocument();
+        $cmd = $this->createCommandDocument();
+
+        // Read concern can change the query plan
+        if (isset($this->options['readConcern'])) {
+            $cmd['readConcern'] = $this->options['readConcern'];
+        }
+
+        return $cmd;
     }
 
     /**

@@ -19,6 +19,8 @@ class Utils extends App {
 
     public function revisions($oid) {
 
+        $this->hasValidCsrfToken(true);
+
         $users = [];
         $limit = $this->param('limit:int', 50);
         $revisions = $this->app->helper('revisions')->getList($oid, $limit);
@@ -45,6 +47,17 @@ class Utils extends App {
 
         return $revisions;
 
+    }
+
+    public function verifyUser() {
+
+        $password = $this->param('password');
+
+        if (!$password) {
+            return $this->stop(['error' => 'Password for verification is missing'], 412);
+        }
+
+        return ['success' => $this->app->module('system')->verifyUser($password)];
     }
 
     public function icons() {

@@ -160,7 +160,7 @@ let FieldsManager = {
     template: /*html*/`
         <div>
 
-            <kiss-card class="animated fadeIn kiss-padding kiss-align-center kiss-text-caption" theme="bordered contrast" v-if="!fields.length">
+            <kiss-card class="animated fadeIn kiss-padding kiss-align-center kiss-text-caption" theme="contrast" v-if="!fields.length">
                 <div class="kiss-text-bold">{{ t('No fields') }}</div>
             </kiss-card>
 
@@ -192,14 +192,14 @@ let FieldsManager = {
                         </kiss-card>
 
                         <div class="kiss-position-absolute kiss-width-1-3 kiss-align-center kiss-visible-toggle" style="bottom:0;height:20px;left:50%;transform:translateX(-50%) translateY(15%);z-index:5;" v-if="fields.length > 1 && index !== (fields.length - 1)">
-                            <a class="kiss-button kiss-button-small kiss-hidden-hover animated fadeIn faster" :title="t('Add field')" @click="add(element)"><span class="kiss-size-6">+</span></a>
+                            <button type="button" class="kiss-button kiss-button-small kiss-hidden-hover animated fadeIn faster" :title="t('Add field')" @click="add(element)"><span class="kiss-size-6">+</span></button>
                         </div>
                     </div>
                 </template>
             </vue-draggable>
 
-            <div class="kiss-margin kiss-align-center" v-if="fieldTypes">
-                <a class="kiss-size-large" @click="add()"><icon>control_point</icon></a>
+            <div class="kiss-margin-small" v-if="fieldTypes">
+                <button type="button" class="kiss-button kiss-button-small" @click="add()"><icon class="kiss-margin-small-right">control_point</icon> {{ t('Add field') }}</button>
             </div>
 
         </div>
@@ -320,10 +320,10 @@ let FieldsManager = {
                         <div class="kiss-margin">
                             <input class="kiss-input kiss-width-1-1" :placeholder="t('Filter...')" v-model="fieldTypeFilter">
                         </div>
-                        <kiss-navlist kiss-popout-close="true" v-if="field">
+                        <kiss-navlist v-if="field">
                             <kiss-grid class="kiss-margin-top" cols="1@s 2@m 3@l" gap="small">
                                 <kiss-card class="kiss-padding-xsmall" hover="contrast" v-for="(f,fieldType) in filteredFieledTypes">
-                                    <kiss-row class="kiss-position-relative" gap="small">
+                                    <kiss-row class="kiss-position-relative" gap="small" kiss-popout-close="true">
                                         <div>
                                             <div class="kiss-padding-small app-border-radius" :style="{background: f.color || 'rgb(255, 248, 214)'}">
                                                 <img :src="$base(f.icon || 'system:assets/icons/edit.svg')" width="20" height="20" :title="fieldType">

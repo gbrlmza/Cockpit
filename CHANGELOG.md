@@ -1,5 +1,79 @@
 # Release Notes
 
+## 2.7.1 (2023-10-08)
+
+- Fix broken assets loading for asset field with multiple values
+- Fix referenced assets updates for content tree items
+- Fix mime type of generated thumbnails in assets manager
+- Add tower web console availability check
+- Add fields outline for better navigation
+
+## 2.7.0 (2023-09-15)
+
+- Fix mime type detection on asset upload
+- Fix possible Cross-site Scripting (XSS) in Rest/GraphQL viewer
+- Add src setting for slect and tag fields to load options from internal sources
+- Sanitize space name during installation
+- Multiselect & delete of assets
+- Add thumbhash to image assets on upload
+- Move buckets code to system module
+- Add support for custom meta data for asset fields
+- Support for multiple assets selection (eg asset field with multiple values)
+- Add color field value render function to show color in items list
+- Add table view to assets manager
+
+## 2.6.3 (2023-08-15)
+
+- Prevent uploading .phps + .(x)html files in assets manager
+- Require verification for updating user data
+- Support post field projection after content population (via ..{fieldname})
+- Extract width + height and colors from uploaded svg files
+- Implement HTTP caching when using response cache (via rspc parameter)
+- Resolve `{field}:locale` in filter and sort parameters
+- Optimize icon font size
+- Add missing meta fields to GraphQL model definitions @filipmiik
+- Fix long text expanding grid items
+
+## 2.6.2 (2023-07-31)
+
+- Add video frame preview (assets manager)
+- Fix `$not` for MongoLite
+- Add `app.system.install` event trigger on initial installation
+- Add support for closing dialogs via `Escape`
+- Add cached modules loading
+- Update icon font
+- Fix global error handler when using spaces
+- Auto map :{space}/storage/* to .spaces/{space}/storage/* (Apache)
+
+## 2.6.1 (2023-06-24)
+
+- Fix api token checking
+
+## 2.6.0 (2023-06-21)
+
+- Try to auto-generate meaningful linked content preview if display setting is missing
+- Update Vue to v3.3.4
+- Add missing permission settings @raffaelj
+- Improve role permissions UI
+- Show locale value picker only if multiple locales are available
+- Use `crypto.randomUUID()` only if available
+- Populate only allowed models in content api (thanks @Ccamm)
+- Fix possible content `models` permission naming collision (thanks @raffaelj)
+- Fix internal content find/populate api exposing data to users without required rights (thanks @raffaelj)
+- Fix empty settings screen
+- Add csrf token validation to internal api calls to improve security (thanks @Ccamm)
+- Add clone functionality to tree content items
+- Add additional checks to `/api/system/healthcheck`
+- Fix disabling asset picker in wysiwyg field
+- Improve fields projection (eg nested fields) when using MongoLite as data storage
+- Use AG Grid instead of Tabulator.js as a foundation for the table field
+- Limit number of files to upload in admin ui based on php setting `max_file_uploads`
+
+## 2.5.2 (2023-05-18)
+
+- Fix link content item dialog
+- Update vendor libs
+
 ## 2.5.1 (2023-05-15)
 
 - Fix js error thrown in dialog component

@@ -13,6 +13,13 @@ $this->on('app.api.request', function() {
     include(__DIR__.'/api.php');
 });
 
+// load cli related code
+$this->on('app.cli.init', function ($cli) {
+    $app = $this;
+    include(__DIR__ . '/cli.php');
+});
+
+
 // assets api
 $this->module('assets')->extend([
 
@@ -58,14 +65,21 @@ $this->module('assets')->extend([
             $files = $param;
         }
 
+        $finfo      = finfo_open(FILEINFO_MIME_TYPE);
         $uploaded  = [];
         $failed    = [];
-        $_files    = [];
+        $_files     = [];
         $assets    = [];
 
         $allowed   = $this->app->retrieve('assets/allowed_uploads', '*');
         $allowed   = $allowed == '*' ? true : str_replace([' ', ','], ['', '|'], preg_quote(is_array($allowed) ? implode(',', $allowed) : $allowed));
         $max_size  = $this->app->retrieve('assets/max_upload_size', 0);
+
+        $forbiddenExtension = ['php', 'phar', 'phtml', 'phps', 'htm', 'html', 'xhtml', 'htaccess'];
+        $forbiddenMime = [
+            'application/x-httpd-php', 'application/x-php', 'text/x-php',
+            'text/html', 'application/xhtml+xml'
+        ];
 
         if (isset($files['name']) && is_array($files['name'])) {
 
@@ -74,11 +88,17 @@ $this->module('assets')->extend([
             for ($i = 0; $i < $cnt; $i++) {
 
                 $_file  = $this->app->path('#tmp:').'/'.$files['name'][$i];
+                $_mime = $finfo->file($files['tmp_name'][$i]);
                 $_isAllowed = $allowed === true ? true : preg_match("/\.({$allowed})$/i", $_file);
                 $_sizeAllowed = $max_size ? filesize($files['tmp_name'][$i]) < $max_size : true;
 
-                // prevent uploading php files
-                if ($_isAllowed && in_array(strtolower(pathinfo($_file, PATHINFO_EXTENSION)), ['php', 'phar', 'phtml'])) {
+                $extension = strtolower(pathinfo(parse_url($_file, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+                // prevent uploading php / html files
+                if ($_isAllowed && (
+                    in_array($extension, $forbiddenExtension) ||
+                    in_array(strtolower($_mime), $forbiddenMime)
+                )) {
                     $_isAllowed = false;
                 }
 
@@ -164,23 +184,73 @@ $this->module('assets')->extend([
                 default => 'unknown'
             };
 
-            if ($asset['type'] == 'image' && !preg_match('/\.svg$/i', $file)) {
+            if ($asset['type'] == 'image') {
 
-                $info = getimagesize($file);
-                $asset['width']  = $info[0];
-                $asset['height'] = $info[1];
-                $asset['colors'] = [];
+                if (preg_match('/\.svg$/i', $file)) {
 
-                if ($asset['width'] && $asset['height']) {
+                    if (function_exists('simplexml_load_string')) {
 
-                    try {
-                        $asset['colors'] = \ColorThief\ColorThief::getPalette($file, 5, ceil(($asset['width'] * $asset['height']) / 10000));
-                    } catch (\Exception $e) {
-                        $asset['colors'] = [];
+                        $svgContent = file_get_contents($file);
+
+                        libxml_use_internal_errors(true);
+                        $xml = simplexml_load_string($svgContent);
+                        libxml_use_internal_errors(false);
+
+                        if ($xml && isset($xml['width']) && isset($xml['height'])) {
+
+                            $asset['width'] = (string)$xml['width'];
+                            $asset['height'] = (string)$xml['height'];
+
+                            if (is_numeric($asset['width'])) $asset['width'] = $asset['width'] + 0;
+                            if (is_numeric($asset['height'])) $asset['height'] = $asset['height'] + 0;
+
+                            $colors = [];
+
+                            foreach([
+                                '/#([a-fA-F0-9]{3,8})\b/',
+                                '/rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(,\s*[\d.]+\s*)?\)/',
+                                '/hsla?\(\s*\d+\s*,\s*[\d.%]+\s*,\s*[\d.%]+\s*(,\s*[\d.]+\s*)?\)/',
+                            ] as $regex) {
+                                preg_match_all($regex, $svgContent, $matches);
+                                if (isset($matches[0])) $colors = array_merge($colors, $matches[0]);
+                            }
+
+                            $asset['colors'] = count($colors) ? array_merge([], array_unique($colors)) : null;
+                        }
                     }
 
-                    foreach ($asset['colors'] as &$color) {
-                        $color = sprintf("#%02x%02x%02x", $color[0], $color[1], $color[2]);
+                } else {
+
+                    $info = getimagesize($file);
+                    $asset['width']  = $info[0];
+                    $asset['height'] = $info[1];
+
+                    if ($asset['width'] && $asset['height']) {
+
+                        $tmppath = $this->app->path('#tmp:').$clean;
+
+                        try {
+
+                            if (function_exists('ini_set')) {
+                                ini_set('memory_limit', -1);
+                            }
+
+                            $img = new SimpleImageLib($file);
+                            $img->bestFit(100, 100)->toFile($tmppath);
+
+                            $asset['colors'] = \ColorThief\ColorThief::getPalette($tmppath, 5);
+                            $asset['thumbhash'] = implode('-', Thumbhash::fromFile($tmppath));
+
+                            unlink($tmppath);
+
+                        } catch (\Exception $e) {
+                            $asset['colors'] = [];
+                            $asset['thumbhash'] = null;
+                        }
+
+                        foreach ($asset['colors'] as &$color) {
+                            $color = sprintf("#%02x%02x%02x", $color[0], $color[1], $color[2]);
+                        }
                     }
                 }
             }

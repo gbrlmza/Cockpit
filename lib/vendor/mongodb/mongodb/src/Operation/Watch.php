@@ -44,6 +44,7 @@ use function is_object;
 use function is_string;
 use function MongoDB\Driver\Monitoring\addSubscriber;
 use function MongoDB\Driver\Monitoring\removeSubscriber;
+use function MongoDB\is_document;
 use function MongoDB\select_server;
 use function MongoDB\server_supports_feature;
 
@@ -53,7 +54,6 @@ use function MongoDB\server_supports_feature;
  * Note: the implementation of CommandSubscriber is an internal implementation
  * detail and should not be considered part of the public API.
  *
- * @api
  * @see \MongoDB\Collection::watch()
  * @see https://mongodb.com/docs/manual/changeStreams/
  */
@@ -68,8 +68,7 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
     public const FULL_DOCUMENT_BEFORE_CHANGE_WHEN_AVAILABLE = 'whenAvailable';
     public const FULL_DOCUMENT_BEFORE_CHANGE_REQUIRED = 'required';
 
-    /** @var integer */
-    private static $wireVersionForStartAtOperationTime = 7;
+    private const WIRE_VERSION_FOR_START_AT_OPERATION_TIME = 7;
 
     /** @var Aggregate */
     private $aggregate;
@@ -198,7 +197,7 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
      * @param Manager     $manager        Manager instance from the driver
      * @param string|null $databaseName   Database name
      * @param string|null $collectionName Collection name
-     * @param array       $pipeline       List of pipeline operations
+     * @param array       $pipeline       Aggregation pipeline
      * @param array       $options        Command options
      * @throws InvalidArgumentException for parameter/option parsing errors
      */
@@ -209,7 +208,7 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
         }
 
         $options += [
-            'readPreference' => new ReadPreference(ReadPreference::RP_PRIMARY),
+            'readPreference' => new ReadPreference(ReadPreference::PRIMARY),
         ];
 
         if (array_key_exists('fullDocument', $options) && ! is_string($options['fullDocument'])) {
@@ -224,12 +223,12 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
             throw InvalidArgumentException::invalidType('"readPreference" option', $options['readPreference'], ReadPreference::class);
         }
 
-        if (isset($options['resumeAfter']) && ! is_array($options['resumeAfter']) && ! is_object($options['resumeAfter'])) {
-            throw InvalidArgumentException::invalidType('"resumeAfter" option', $options['resumeAfter'], 'array or object');
+        if (isset($options['resumeAfter']) && ! is_document($options['resumeAfter'])) {
+            throw InvalidArgumentException::expectedDocumentType('"resumeAfter" option', $options['resumeAfter']);
         }
 
-        if (isset($options['startAfter']) && ! is_array($options['startAfter']) && ! is_object($options['startAfter'])) {
-            throw InvalidArgumentException::invalidType('"startAfter" option', $options['startAfter'], 'array or object');
+        if (isset($options['startAfter']) && ! is_document($options['startAfter'])) {
+            throw InvalidArgumentException::expectedDocumentType('"startAfter" option', $options['startAfter']);
         }
 
         if (isset($options['startAtOperationTime']) && ! $options['startAtOperationTime'] instanceof TimestampInterface) {
@@ -469,7 +468,7 @@ class Watch implements Executable, /* @internal */ CommandSubscriber
             return false;
         }
 
-        if (! server_supports_feature($server, self::$wireVersionForStartAtOperationTime)) {
+        if (! server_supports_feature($server, self::WIRE_VERSION_FOR_START_AT_OPERATION_TIME)) {
             return false;
         }
 

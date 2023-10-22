@@ -1,3 +1,5 @@
+import "../components/display-image.js";
+
 // Global Vue components
 VueView.component('asset-preview', 'assets:assets/vue-components/asset-preview.js');
 VueView.component('field-asset', 'assets:assets/vue-components/field-asset.js');
@@ -11,7 +13,7 @@ App.on('field-wysiwyg-setup', evt => {
 
     let editor = evt.params[0];
 
-    if (editor.settings && editor.settings.assetsPicker === false) {
+    if (editor.getParam('assetsPicker') === false) {
         return;
     }
 
@@ -21,7 +23,7 @@ App.on('field-wysiwyg-setup', evt => {
 
             VueView.ui.modal('assets:assets/dialogs/asset-picker.js', {}, {
 
-                selectAsset: (asset) => {
+                onSelect: (asset) => {
 
                     let content, url = App.base(`#uploads:${asset.path}`);
 

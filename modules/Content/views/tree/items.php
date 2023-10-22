@@ -21,8 +21,8 @@
                     <div class="kiss-size-5 kiss-text-bold"><?= $this->escape($model['label'] ? $model['label'] : $model['name']) ?></div>
                 </div>
 
-                <kiss-card class="kiss-flex kiss-flex-middle kiss-overlay-input kiss-padding-small kiss-margin-small-right" theme="contrast shadowed" v-if="Object.keys(App._locales).length > 1">
-                    <icon class="kiss-margin-xsmall-right">language</icon>
+                <kiss-card class="kiss-flex kiss-flex-middle kiss-overlay-input kiss-padding-small kiss-margin-small-right" gap="small" theme="contrast shadowed" v-if="hasLocalization">
+                    <icon size="larger">language</icon>
                     <span class="kiss-size-small kiss-text-caption kiss-text-bolder">{{ App._locales[this.locale] }}</span>
                     <select v-model="locale"><option :value="i18n" v-for="(label,i18n) in App._locales">{{label}}</option></select>
                 </kiss-card>
@@ -135,6 +135,20 @@
                     }
                 },
 
+                computed: {
+
+                    hasLocalization() {
+
+                        if (Object.keys(App._locales).length < 2) {
+                            return false;
+                        }
+
+                        return this.model.fields.filter(field => {
+                            return field.i18n === true;
+                        }).length > 0;
+                    }
+                },
+
                 methods: {
 
                     load(pid = null) {
@@ -217,7 +231,7 @@
                 <li class="kiss-nav-divider"></li>
                 <li>
                     <a class="kiss-flex kiss-flex-middle" href="<?= $this->route("/content/tree/item/{$model['name']}") ?>">
-                        <icon class="kiss-margin-small-right">add_circle_outline</icon>
+                        <icon class="kiss-margin-small-right">add_circle</icon>
                         <?= t('Create item') ?>
                     </a>
                 </li>

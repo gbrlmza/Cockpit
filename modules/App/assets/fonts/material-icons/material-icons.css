@@ -3,7 +3,7 @@
     font-family: 'Material Icons Outlined';
     font-style: normal;
     font-weight: 400;
-    src: url(material-icons-outlined.woff2) format('woff2');
+    src: url(material-outline.woff2?v=2.6.4) format('woff2');
 }
 
 icon {
@@ -40,4 +40,8 @@ icon,
 
 icon[size="larger"] {
     transform: scale(1.2);
+}
+
+icon[size="large"] {
+    transform: scale(2);
 }

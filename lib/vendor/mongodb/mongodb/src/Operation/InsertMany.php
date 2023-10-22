@@ -26,15 +26,14 @@ use MongoDB\Exception\InvalidArgumentException;
 use MongoDB\Exception\UnsupportedException;
 use MongoDB\InsertManyResult;
 
-use function is_array;
+use function array_is_list;
 use function is_bool;
-use function is_object;
+use function MongoDB\is_document;
 use function sprintf;
 
 /**
  * Operation for inserting multiple documents with the insert command.
  *
- * @api
  * @see \MongoDB\Collection::insertMany()
  * @see https://mongodb.com/docs/manual/reference/command/insert/
  */
@@ -85,18 +84,14 @@ class InsertMany implements Executable
             throw new InvalidArgumentException('$documents is empty');
         }
 
-        $expectedIndex = 0;
+        if (! array_is_list($documents)) {
+            throw new InvalidArgumentException('$documents is not a list');
+        }
 
         foreach ($documents as $i => $document) {
-            if ($i !== $expectedIndex) {
-                throw new InvalidArgumentException(sprintf('$documents is not a list (unexpected index: "%s")', $i));
+            if (! is_document($document)) {
+                throw InvalidArgumentException::expectedDocumentType(sprintf('$documents[%d]', $i), $document);
             }
-
-            if (! is_array($document) && ! is_object($document)) {
-                throw InvalidArgumentException::invalidType(sprintf('$documents[%d]', $i), $document, 'array or object');
-            }
-
-            $expectedIndex += 1;
         }
 
         $options += ['ordered' => true];

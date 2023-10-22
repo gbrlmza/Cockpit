@@ -23,15 +23,14 @@ use MongoDB\Exception\InvalidArgumentException;
 use MongoDB\Exception\UnsupportedException;
 
 use function array_key_exists;
-use function is_array;
 use function is_integer;
-use function is_object;
+use function MongoDB\is_document;
 use function MongoDB\is_first_key_operator;
+use function MongoDB\is_pipeline;
 
 /**
  * Operation for replacing a document with the findAndModify command.
  *
- * @api
  * @see \MongoDB\Collection::findOneAndReplace()
  * @see https://mongodb.com/docs/manual/reference/command/findAndModify/
  */
@@ -102,20 +101,29 @@ class FindOneAndReplace implements Executable, Explainable
      */
     public function __construct(string $databaseName, string $collectionName, $filter, $replacement, array $options = [])
     {
-        if (! is_array($filter) && ! is_object($filter)) {
-            throw InvalidArgumentException::invalidType('$filter', $filter, 'array or object');
+        if (! is_document($filter)) {
+            throw InvalidArgumentException::expectedDocumentType('$filter', $filter);
         }
 
-        if (! is_array($replacement) && ! is_object($replacement)) {
-            throw InvalidArgumentException::invalidType('$replacement', $replacement, 'array or object');
+        if (! is_document($replacement)) {
+            throw InvalidArgumentException::expectedDocumentType('$replacement', $replacement);
+        }
+
+        // Treat empty arrays as replacement documents for BC
+        if ($replacement === []) {
+            $replacement = (object) $replacement;
         }
 
         if (is_first_key_operator($replacement)) {
-            throw new InvalidArgumentException('First key in $replacement argument is an update operator');
+            throw new InvalidArgumentException('First key in $replacement is an update operator');
         }
 
-        if (isset($options['projection']) && ! is_array($options['projection']) && ! is_object($options['projection'])) {
-            throw InvalidArgumentException::invalidType('"projection" option', $options['projection'], 'array or object');
+        if (is_pipeline($replacement, true /* allowEmpty */)) {
+            throw new InvalidArgumentException('$replacement is an update pipeline');
+        }
+
+        if (isset($options['projection']) && ! is_document($options['projection'])) {
+            throw InvalidArgumentException::expectedDocumentType('"projection" option', $options['projection']);
         }
 
         if (array_key_exists('returnDocument', $options) && ! is_integer($options['returnDocument'])) {
@@ -166,8 +174,8 @@ class FindOneAndReplace implements Executable, Explainable
      * @see Explainable::getCommandDocument()
      * @return array
      */
-    public function getCommandDocument(Server $server)
+    public function getCommandDocument()
     {
-        return $this->findAndModify->getCommandDocument($server);
+        return $this->findAndModify->getCommandDocument();
     }
 }

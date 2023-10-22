@@ -1,5 +1,3 @@
-import "./vue-view.js";
-
 import "../components/app-avatar/app-avatar.js";
 import "../components/app-actionbar/app-actionbar.js";
 import "../components/app-fieldcontainer/app-fieldcontainer.js";
@@ -21,10 +19,10 @@ VueView.component('vue-draggable', Vue.defineAsyncComponent(() => {
 VueView.component('vue-table', Vue.defineAsyncComponent(() => {
     return new Promise(resolve => {
         App.assets.require([
-            'app:assets/vendor/tabulator/tabulator.js',
-            'app:assets/css/vendor/tabulator.css'
+            'app:assets/vendor/ag-grid/ag-grid.js',
+            'app:assets/css/vendor/ag-grid-theme.css'
         ]).then(() => {
-            App.utils.import('app:assets/vendor/tabulator/tabulator-vue.js').then((m) => resolve(m));
+            App.utils.import('app:assets/vendor/ag-grid/ag-grid-vue3.js').then((m) => resolve(m));
         });
     })
 }));

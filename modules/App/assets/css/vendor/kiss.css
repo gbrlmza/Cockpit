@@ -1,10 +1,11 @@
 
 :root {
-    --kiss-base-font-family: Inter, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    --kiss-base-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     --kiss-base-background-color: #131720;
     --kiss-base-text-color: #fafafa;
     --kiss-base-font-size: 15px;
     --kiss-font-size-1: 2rem;
+    --kiss-font-size-4: 1.3rem;
     --kiss-hr-color: rgba(255,255,255,.1);
     --kiss-link-color: var(--kiss-color-primary);
     --kiss-link-hover-color: #1994ff;
@@ -162,6 +163,7 @@ select.kiss-input option {
 
 .kiss-input-small {
     padding: .3em .3em;
+    font-size: .8em;
 }
 
 .kiss-disabled,

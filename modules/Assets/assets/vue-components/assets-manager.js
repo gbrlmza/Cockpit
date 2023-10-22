@@ -5,7 +5,7 @@ function getUppy(meta = {}) {
         autoProceed: false,
         restrictions: {
             maxFileSize: App._vars.maxUploadSize || null,
-            //maxNumberOfFiles: 3,
+            maxNumberOfFiles: App._vars.maxFileUploads || 20,
             minNumberOfFiles: 1,
             //allowedFileTypes: ['image/*', 'video/*']
         },
@@ -17,6 +17,9 @@ function getUppy(meta = {}) {
         browserBackButtonClose: false
     }).use(Uppy.XHRUpload, {
         endpoint: App.route('/assets/upload'),
+        headers: {
+            'X-CSRF-TOKEN': App.csrf
+        },
         bundle: true
     }).use(Uppy.Webcam, { target: Uppy.Dashboard, showVideoSourceDropdown: true })
     .use(Uppy.ScreenCapture, { target: Uppy.Dashboard })
@@ -31,7 +34,6 @@ export default {
         return {
             assets: [],
             selected: [],
-            selectedAsset: null,
             folders: [],
             folder: null,
 
@@ -48,23 +50,43 @@ export default {
             pages: 1,
             limit: 15,
 
+            view: App.session.get('assets.manager.view', 'cards'),
+
             loading: false,
             uppy: null
         }
     },
 
     props: {
+
         modal: {
             type: Boolean,
             default: false
         },
 
-        selectAsset: {
+        onSelect: {
             default: null
+        },
+
+        selectMultiple: {
+            type: Boolean,
+            default: false
         },
 
         initFilter: {
             default: null
+        }
+    },
+
+    computed: {
+
+        selectedAssets() {
+
+            if (!this.selected.length) {
+                return [];
+            };
+
+            return this.assets.filter(asset => this.selected.indexOf(asset._id) > -1);
         }
     },
 
@@ -87,6 +109,9 @@ export default {
         filter(val) {
             this.txtFilter = val;
             this.load();
+        },
+        view(val) {
+            App.session.set('assets.manager.view', val);
         }
     },
 
@@ -120,7 +145,6 @@ export default {
 
             this.loading = true;
             this.selected = [];
-            this.selectedAsset = null;
 
             this.$request('/assets/assets', {options, folder: this.folder}).then(rsp => {
                 this.assets = rsp.assets;
@@ -129,7 +153,6 @@ export default {
                 this.pages = rsp.pages;
                 this.count = rsp.count;
 
-                this.view = 'assets';
                 this.loading = false;
             })
         },
@@ -169,6 +192,20 @@ export default {
             });
         },
 
+        toggleSelect(asset) {
+
+            if (!this.selectMultiple) {
+                this.selected = [];
+            }
+
+            if (this.selected.indexOf(asset._id) > -1) {
+                this.selected.splice(this.selected.indexOf(asset._id), 1);
+                return;
+            }
+
+            this.selected.push(asset._id);
+        },
+
         toggleAllSelect(e) {
 
             this.selected = [];
@@ -176,6 +213,10 @@ export default {
             if (e.target.checked) {
                 this.assets.forEach(asset => this.selected.push(asset._id));
             }
+        },
+
+        isSelected(asset) {
+            return this.selected.indexOf(asset._id) > -1;
         },
 
         toggleAssetActions(asset) {
@@ -261,7 +302,7 @@ export default {
 
         copyAssetLinkID(asset) {
             App.utils.copyText(location.origin + App.route(`/assets/link/${asset._id}`), () =>  App.ui.notify('Asset link copied!'));
-        },
+        }
     },
 
     template: /*html*/`
@@ -305,28 +346,55 @@ export default {
                 </div>
             </div>
 
-            <kiss-grid cols="2@s 5@m 6@xl" class="spotlight-group" gap="small" v-if="!loading && assets.length" match="true" hover="shadow">
+            <kiss-grid cols="2@s 5@m 6@xl" class="spotlight-group" gap="small" v-if="!loading && assets.length && view == 'cards'" match="true" hover="shadow">
 
-                    <kiss-card class="kiss-position-relative kiss-bgcolor-contrast" theme="bordered" hover="shadow" :style="{borderColor: (selectedAsset && selectedAsset._id == asset._id && 'var(--kiss-color-primary)') || null}" v-for="asset in assets">
+                    <kiss-card class="kiss-position-relative kiss-bgcolor-contrast" theme="bordered" hover="shadow" :style="{borderColor: isSelected(asset) ? 'var(--kiss-color-primary)' : null}" v-for="asset in assets">
                         <div class="kiss-position-relative" :class="{'kiss-bgcolor-transparentimage': asset.type == 'image'}">
                             <canvas width="400" height="300"></canvas>
                             <div class="kiss-cover kiss-padding kiss-flex kiss-flex-middle kiss-flex-center">
                                 <div><asset-preview :asset="asset"></asset-preview></div>
                             </div>
-                            <a class="kiss-cover spotlight" :href="$base('#uploads:'+asset.path)" :data-media="asset.type" :data-title="asset.title" v-if="['image', 'video'].indexOf(asset.type) > -1"></a>
-                            <a class="kiss-cover" @click="selectedAsset=asset" v-if="modal"></a>
+                            <a class="kiss-cover spotlight" :href="$base('#uploads:'+asset.path)" :data-media="asset.type" :data-title="asset.title" :aria-label="asset.title" v-if="['image', 'video'].indexOf(asset.type) > -1"></a>
+                            <a class="kiss-cover" @click="toggleSelect(asset)" :aria-label="asset.title" v-if="modal"></a>
                         </div>
-                        <div class="kiss-padding kiss-flex kiss-flex-middle">
-                            <div class="kiss-text-truncate kiss-size-xsmall kiss-flex-1"><a class="kiss-link-muted" @click="edit(asset)">{{ App.utils.truncate(asset.title, 25) }}</a></div>
-                            <a class="kiss-margin-small-left" @click="toggleAssetActions(asset)"><icon>more_horiz</icon></a>
+                        <div class="kiss-padding kiss-flex kiss-flex-middle" gap="small">
+                            <div v-if="!modal || selectMultiple"><input class="kiss-checkbox" type="checkbox" v-model="selected" :value="asset._id"></div>
+                            <div class="kiss-text-truncate kiss-size-xsmall kiss-flex-1"><a class="kiss-link-muted" @click="edit(asset)">{{ asset.title }}</a></div>
+                            <a @click="toggleAssetActions(asset)" :aria-label="t('Toggle asset options')"><icon>more_horiz</icon></a>
                         </div>
                     </kiss-card>
 
             </kiss-grid>
 
+            <table class="kiss-table" v-if="!loading && assets.length && view == 'table'">
+                <thead>
+                    <tr>
+                        <th width="20" v-if="!modal || selectMultiple"><input class="kiss-checkbox kiss-size-6" type="checkbox" @click="toggleAllSelect"></th>
+                        <th width="50"></th>
+                        <th width="70%">{{ t('Title') }}</th>
+                        <th>{{ t('Size') }}</th>
+                        <th>{{ t('Mime') }}</th>
+                        <th width="20"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="asset in assets" :style="{borderLeft: isSelected(asset) ? '1px var(--kiss-color-primary) solid' : null}">
+                        <td v-if="!modal || selectMultiple"><input class="kiss-checkbox" type="checkbox" v-model="selected" :value="asset._id"></td>
+                        <td class="kiss-position-relative kiss-padding-small">
+                            <asset-preview :asset="asset" max-height="30px"></asset-preview>
+                            <a class="kiss-cover spotlight" :href="$base('#uploads:'+asset.path)" :data-media="asset.type" :data-title="asset.title" :aria-label="asset.title" v-if="!modal && ['image', 'video'].indexOf(asset.type) > -1"></a>
+                        </td>
+                        <td class="kiss-text-truncate" :class="{'kiss-color-primary': isSelected(asset)}"><a class="kiss-link-muted" @click="modal ? toggleSelect(asset) : edit(asset)">{{ asset.title }}</a></td>
+                        <td class="kiss-color-muted kiss-text-monospace">{{ App.utils.formatSize(asset.size) }}</td>
+                        <td class="kiss-color-muted kiss-text-monospace">{{ asset.mime }}</td>
+                        <td><a @click="toggleAssetActions(asset)" :aria-label="t('Toggle asset options')"><icon>more_horiz</icon></a></td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
 
-        <div class="kiss-flex kiss-flex-middle kiss-margin-large-top" v-if="modal">
+        <div class="kiss-flex kiss-flex-middle kiss-margin-large-top" v-if="modal" gap="">
             <div class="kiss-flex kiss-flex-middle" v-if="!loading && count">
                 <app-pagination>
                     <div class="kiss-color-muted">{{ count }} {{ count == 1 ? t('Item') : t('Items') }}</div>
@@ -340,6 +408,10 @@ export default {
                     <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
                 </app-pagination>
             </div>
+            <div class="kiss-flex kiss-flex-middle" gap="" v-if="!loading">
+                <a class="kiss-link-muted" :class="view=='cards' ? 'kiss-color-primary' : 'kiss-color-muted'" @click="view='cards'"><icon size="large">grid_view</icon></a>
+                <a class="kiss-link-muted" :class="view=='table' ? 'kiss-color-primary' : 'kiss-color-muted'" @click="view='table'"><icon size="large">dns</icon></a>
+            </div>
             <div class="kiss-flex-1 kiss-margin-right"></div>
             <div class="kiss-button-group kiss-margin-right">
                 <button class="kiss-button" @click="createFolder()">{{ t('Create folder') }}</button>
@@ -347,13 +419,13 @@ export default {
             </div>
             <div class="kiss-button-group">
                 <button class="kiss-button" kiss-dialog-close>{{ t('Cancel') }}</button>
-                <button class="kiss-button kiss-button-primary" v-if="selectedAsset" @click="selectAsset && selectAsset(selectedAsset)">{{ t('Select asset') }}</button>
+                <button class="kiss-button kiss-button-primary" v-if="selected.length" @click="onSelect && onSelect(selectMultiple ? selectedAssets : selectedAssets[0])">{{ t('Select') }}</button>
             </div>
         </div>
 
         <app-actionbar v-if="!modal">
             <kiss-container>
-                <div class="kiss-flex kiss-flex-middle">
+                <div class="kiss-flex kiss-flex-middle" gap>
                     <div class="kiss-flex kiss-flex-middle" v-if="!loading && count">
                         <app-pagination>
                             <div class="kiss-color-muted">{{ count }} {{ count == 1 ? t('Item') : t('Items') }}</div>
@@ -367,7 +439,14 @@ export default {
                             <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
                         </app-pagination>
                     </div>
+                    <div class="kiss-flex kiss-flex-middle" gap="" v-if="!loading">
+                        <a class="kiss-link-muted" :class="view=='cards' ? 'kiss-color-primary' : 'kiss-color-muted'" @click="view='cards'"><icon size="large">grid_view</icon></a>
+                        <a class="kiss-link-muted" :class="view=='table' ? 'kiss-color-primary' : 'kiss-color-muted'" @click="view='table'"><icon size="large">dns</icon></a>
+                    </div>
                     <div class="kiss-flex-1 kiss-margin-right"></div>
+                    <div v-if="selected.length">
+                        <button type="button" class="kiss-button kiss-button-danger" @click="removeSelected()">{{ t('Delete') }} -{{ selected.length }}-</button>
+                    </div>
                     <div class="kiss-button-group">
                         <button class="kiss-button" @click="createFolder()">{{ t('Create folder') }}</button>
                         <button class="kiss-button kiss-button-primary" :disabled="!uppy" @click="upload()">{{ t('Upload asset') }}</button>
@@ -426,7 +505,7 @@ export default {
                             </li>
                             <li>
                                 <a class="kiss-flex kiss-flex-middle" @click="renameFolder(actionFolder)">
-                                    <icon class="kiss-margin-small-right" size="larger">drive_file_rename_outline</icon>
+                                    <icon class="kiss-margin-small-right" size="larger">edit</icon>
                                     {{ t('Rename') }}
                                 </a>
                             </li>

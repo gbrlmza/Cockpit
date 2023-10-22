@@ -119,12 +119,17 @@ $this->on('app.admin.request', function(Lime\Request $request) {
     $this->trigger('app.admin.i18n.load', [$locale, $i18n]);
 
     $this->bind('/app.i18n.data.js', function() use($locale) {
+
         $this->helper('session')->close();
         $this->response->mime = 'js';
-        $data = $this->helper('i18n')->data($locale);
-        return 'if (window.i18n) {
-            window.i18n.register('.(count($data) ? json_encode($data):'{}').');
-        }';
+
+        $data = json_encode(new ArrayObject($this->helper('i18n')->data($locale)));
+
+        return <<<SCRIPT
+            if (window.i18n) {
+                window.i18n.register($data);
+            }
+        SCRIPT;
     });
 
     if (!$user) {
@@ -170,21 +175,4 @@ $this->on('after', function() {
             break;
     }
 
-     /**
-     * send some debug information
-     * back to client (visible in the network panel)
-     */
-    if ($this['debug'] && $this->response) {
-
-        /**
-        * some system info
-        */
-
-        $DURATION_TIME = microtime(true) - APP_START_TIME;
-        $MEMORY_USAGE  = memory_get_peak_usage(false)/1024/1024;
-
-        $this->response->headers["APP_DURATION_TIME"] = "{$DURATION_TIME}SEC";
-        $this->response->headers["APP_MEMORY_USAGE"] = "{$MEMORY_USAGE}MB";
-        $this->response->headers["APP_LOADED_FILES"] = count(get_included_files());
-    }
 });

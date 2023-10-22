@@ -1,10 +1,18 @@
+import { thumbHashToDataURL } from '../vendor/thumbhash.js';
+
+
+let uuid = 0,
+    hasWebPSupport = document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp'),
+    cache = {};
 
 export default {
 
     data() {
 
         return {
-            loading: true
+            uuid: `assetPreview${++uuid}`,
+            loading: true,
+            preview: null
         }
     },
 
@@ -12,12 +20,21 @@ export default {
         asset: {
             type: Object,
             default: {}
+        },
+        maxHeight: {
+            type: String,
+            default: null,
         }
     },
 
     watch: {
         asset: {
-            handler() {
+            handler(ov, nv) {
+
+                if (ov?.path === nv?.path) {
+                    return;
+                }
+
                 setTimeout(() => this.update());
             },
             deep: true
@@ -32,26 +49,115 @@ export default {
 
         update() {
 
-            if (this.asset.type == 'image') {
-                let img = new Image();
+            this.preview = null;
 
-                img.onload = () => {
-                    this.loading = false;
-                }
-
-                img.src = this.$route(`/assets/thumbnail/${this.asset._id}?m=bestFit&mime=auto&h=300&t=${this.asset._modified}`);
+            if (this.asset.thumbhash) {
+                this.preview = thumbHashToDataURL(this.asset.thumbhash.split('-'))
             }
 
+            if (this.asset.type == 'image') {
+
+                let start = (Date.now()),
+                    delay = 250,
+                    mime = hasWebPSupport ? 'webp' : 'auto',
+                    duration;
+
+                this.$request(`/assets/thumbnail/${this.asset._id}?m=bestFit&mime=${mime}&h=300&t=${this.asset._modified}&re=0&q=70`).then(rsp => {
+
+                    duration = Date.now() - start;
+
+                    setTimeout(() => {
+                        this.preview = rsp.url;
+                        this.loading = false;
+                    }, duration > delay ? 0 : delay - (Date.now() - start));
+                });
+            }
+
+            if (this.asset.type == 'video') {
+                setTimeout(() => this.captureFrame(), 0);
+            }
+        },
+
+        captureFrame() {
+
+            let videoURL = this.$base(`#uploads:${this.asset.path}`);
+            let timeInSeconds = 2;
+
+            const finalize = (img) => {
+
+                let canvas = document.querySelector(`#${this.uuid} canvas`),
+                    image = new Image();
+
+                image.onload = () => {
+
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+
+                    // draw frame
+                    let ctx = canvas.getContext('2d');
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                };
+
+                image.src = img;
+
+                this.loading = false;
+            };
+
+            if (!cache[this.asset.path]) {
+
+                cache[this.asset.path] = new Promise((resolve, reject) => {
+
+                    let video = document.createElement('video');
+
+                    video.onseeked = () => {
+
+                        let canvas = document.createElement('canvas');
+                        canvas.height = video.videoHeight;
+                        canvas.width = video.videoWidth;
+
+                        // draw frame
+                        let ctx = canvas.getContext('2d');
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        resolve(canvas.toDataURL());
+                    };
+
+                    video.muted = true;
+                    video.src = videoURL;
+                    video.crossOrigin = 'anonymous';  // may be needed in some cases
+
+                    video.onloadedmetadata = () => {
+
+                        if (timeInSeconds > video.duration) {
+                            timeInSeconds = Math.round(video.duration / 2);
+                        }
+
+                        // seek to time
+                        video.currentTime = timeInSeconds;
+                    };
+                });
+            }
+
+            cache[this.asset.path].then((img) => {
+                finalize(img);
+            });
         }
     },
 
     template: /*html*/`
-        <div>
+        <div :id="uuid">
             <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center" v-if="asset.type=='image'">
-                <img class="animated fadeIn kiss-margin-auto kiss-responsive-height" loading="lazy" :src="$route('/assets/thumbnail/'+asset._id+'?m=bestFit&mime=auto&h=300&t='+asset._modified)" :style="{minHeight: asset.mime == 'image/svg+xml' ? '60%':''}" v-if="!loading">
+                <img class="kiss-position-absolute kiss-margin-auto kiss-responsive-height" :alt="asset.title" loading="lazy" :src="preview" :width="asset.width" :height="asset.height" :style="{height: maxHeight ?? '100%'}" v-if="preview && loading">
+                <img class="kiss-position-absolute kiss-margin-auto kiss-responsive-height animated fadeIn fast" :alt="asset.title" loading="lazy" :src="preview" :width="asset.width" :height="asset.height" :style="{height: maxHeight}" v-if="preview && !loading">
                 <app-loader size="small" v-if="loading"></app-loader>
             </div>
-            <kiss-svg :src="$base('assets:assets/icons/video.svg')" width="80" height="80" v-else-if="asset.type=='video'"></kiss-svg>
+            <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center" v-else-if="asset.type=='video'">
+                <canvas class="kiss-margin-auto kiss-responsive-height" style="opacity:.5" :style="{height: maxHeight}"></canvas>
+                <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center">
+                    <app-loader size="small" v-if="loading"></app-loader>
+                    <kiss-svg :src="$base('assets:assets/icons/video.svg')" width="80" height="80" style="max-width:50%" v-if="!loading"></kiss-svg>
+                </div>
+            </div>
             <kiss-svg :src="$base('assets:assets/icons/file.svg')" width="80" height="80" v-else></kiss-svg>
         </div>
     `

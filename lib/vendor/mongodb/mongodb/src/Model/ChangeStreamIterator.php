@@ -36,6 +36,7 @@ use function is_array;
 use function is_object;
 use function MongoDB\Driver\Monitoring\addSubscriber;
 use function MongoDB\Driver\Monitoring\removeSubscriber;
+use function MongoDB\is_document;
 
 /**
  * ChangeStreamIterator wraps a change stream's tailable cursor.
@@ -75,8 +76,8 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
      */
     public function __construct(Cursor $cursor, int $firstBatchSize, $initialResumeToken, ?object $postBatchResumeToken)
     {
-        if (isset($initialResumeToken) && ! is_array($initialResumeToken) && ! is_object($initialResumeToken)) {
-            throw InvalidArgumentException::invalidType('$initialResumeToken', $initialResumeToken, 'array or object');
+        if (isset($initialResumeToken) && ! is_document($initialResumeToken)) {
+            throw InvalidArgumentException::expectedDocumentType('$initialResumeToken', $initialResumeToken);
         }
 
         parent::__construct($cursor);
@@ -181,9 +182,7 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
         return $this->isValid ? parent::key() : null;
     }
 
-    /**
-     * @see https://php.net/iteratoriterator.rewind
-     */
+    /** @see https://php.net/iteratoriterator.rewind */
     public function next(): void
     {
         /* Determine if advancing the iterator will execute a getMore command
@@ -199,6 +198,7 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
 
         try {
             parent::next();
+
             $this->onIteration(! $getMore);
         } finally {
             if ($getMore) {
@@ -207,9 +207,7 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
         }
     }
 
-    /**
-     * @see https://php.net/iteratoriterator.rewind
-     */
+    /** @see https://php.net/iteratoriterator.rewind */
     public function rewind(): void
     {
         if ($this->isRewindNop) {
@@ -217,12 +215,11 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
         }
 
         parent::rewind();
+
         $this->onIteration(false);
     }
 
-    /**
-     * @see https://php.net/iteratoriterator.valid
-     */
+    /** @see https://php.net/iteratoriterator.valid */
     public function valid(): bool
     {
         return $this->isValid;
@@ -238,8 +235,8 @@ class ChangeStreamIterator extends IteratorIterator implements CommandSubscriber
      */
     private function extractResumeToken($document)
     {
-        if (! is_array($document) && ! is_object($document)) {
-            throw InvalidArgumentException::invalidType('$document', $document, 'array or object');
+        if (! is_document($document)) {
+            throw InvalidArgumentException::expectedDocumentType('$document', $document);
         }
 
         if ($document instanceof Serializable) {

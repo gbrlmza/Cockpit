@@ -34,10 +34,11 @@
             </div>
 
             <kiss-row class="kiss-margin-large" gap="large" v-if="fields.length">
+                <div class="kiss-visible@m kiss-width-1-5@m kiss-width-1-8@xl kiss-width-max-small">
+                    <kiss-sticky id="content-fields-outline" data-offset="20"></kiss-sticky>
+                </div>
                 <div class="kiss-flex-1">
-                    <div class="kiss-width-3-4@xl">
-                        <fields-renderer v-model="item" :fields="fields" :locales="locales"></fields-renderer>
-                    </div>
+                    <fields-renderer v-model="item" :fields="fields" :locales="locales" outline="#content-fields-outline"></fields-renderer>
                 </div>
                 <div class="kiss-width-1-4@m kiss-width-1-5@xl">
 
@@ -51,7 +52,7 @@
                                 <div class="kiss-flex kiss-flex-middle">
                                     <div class="kiss-size-4 kiss-margin-small-right kiss-flex" title="ID"><icon>adjust</icon></div>
                                     <div class="kiss-text-truncate kiss-text-bold kiss-text-monospace kiss-size-small kiss-flex-1">{{ item._id }}</div>
-                                    <a :title="t('Copy')" @click="copyID()"><icon>copy</icon></a>
+                                    <a :title="t('Copy')" @click="copyID()"><icon>content_copy</icon></a>
                                 </div>
                             </div>
 
@@ -137,8 +138,11 @@
             <kiss-container>
                 <div class="kiss-flex kiss-flex-middle">
                     <div class="kiss-button-group" v-if="item._id">
-                        <a class="kiss-button" href="<?=$this->route("/content/tree/item/{$model['name']}")?>">
+                        <a class="kiss-button" :href="$route(`/content/tree/item/${model.name}`)">
                             <?=t('Create new item')?>
+                        </a>
+                        <a class="kiss-button" :href="$route(`/content/tree/clone/${model.name}/${item._id}`)">
+                            <?=t('Clone item')?>
                         </a>
                     </div>
                     <div class="kiss-flex-1"></div>
@@ -196,9 +200,15 @@
                             </a>
                         </li>
                         <li v-if="item._id">
-                            <a class="kiss-flex kiss-flex-middle" href="<?=$this->route("/content/collection/item/{$model['name']}")?>">
-                                <icon class="kiss-margin-small-right">add_circle_outline</icon>
+                            <a class="kiss-flex kiss-flex-middle" :href="$route(`/content/tree/item/${model.name}`)">
+                                <icon class="kiss-margin-small-right">add_circle</icon>
                                 <?=t('Create new item')?>
+                            </a>
+                        </li>
+                        <li v-if="item._id">
+                            <a class="kiss-flex kiss-flex-middle" :href="$route(`/content/tree/clone/${model.name}/${item._id}`)">
+                                <icon class="kiss-margin-small-right">control_point_duplicate</icon>
+                                <?=t('Clone item')?>
                             </a>
                         </li>
                         <li class="kiss-nav-divider"></li>

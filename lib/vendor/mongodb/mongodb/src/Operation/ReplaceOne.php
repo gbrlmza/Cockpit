@@ -23,15 +23,13 @@ use MongoDB\Exception\InvalidArgumentException;
 use MongoDB\Exception\UnsupportedException;
 use MongoDB\UpdateResult;
 
-use function is_array;
-use function is_object;
+use function MongoDB\is_document;
 use function MongoDB\is_first_key_operator;
 use function MongoDB\is_pipeline;
 
 /**
  * Operation for replacing a single document with the update command.
  *
- * @api
  * @see \MongoDB\Collection::replaceOne()
  * @see https://mongodb.com/docs/manual/reference/command/update/
  */
@@ -82,16 +80,21 @@ class ReplaceOne implements Executable
      */
     public function __construct(string $databaseName, string $collectionName, $filter, $replacement, array $options = [])
     {
-        if (! is_array($replacement) && ! is_object($replacement)) {
-            throw InvalidArgumentException::invalidType('$replacement', $replacement, 'array or object');
+        if (! is_document($replacement)) {
+            throw InvalidArgumentException::expectedDocumentType('$replacement', $replacement);
+        }
+
+        // Treat empty arrays as replacement documents for BC
+        if ($replacement === []) {
+            $replacement = (object) $replacement;
         }
 
         if (is_first_key_operator($replacement)) {
-            throw new InvalidArgumentException('First key in $replacement argument is an update operator');
+            throw new InvalidArgumentException('First key in $replacement is an update operator');
         }
 
-        if (is_pipeline($replacement)) {
-            throw new InvalidArgumentException('$replacement argument is a pipeline');
+        if (is_pipeline($replacement, true /* allowEmpty */)) {
+            throw new InvalidArgumentException('$replacement is an update pipeline');
         }
 
         $this->update = new Update(

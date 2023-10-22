@@ -22,13 +22,11 @@ use MongoDB\Driver\Server;
 use MongoDB\Exception\InvalidArgumentException;
 use MongoDB\Exception\UnsupportedException;
 
-use function is_array;
-use function is_object;
+use function MongoDB\is_document;
 
 /**
  * Operation for deleting a document with the findAndModify command.
  *
- * @api
  * @see \MongoDB\Collection::findOneAndDelete()
  * @see https://mongodb.com/docs/manual/reference/command/findAndModify/
  */
@@ -83,12 +81,12 @@ class FindOneAndDelete implements Executable, Explainable
      */
     public function __construct(string $databaseName, string $collectionName, $filter, array $options = [])
     {
-        if (! is_array($filter) && ! is_object($filter)) {
-            throw InvalidArgumentException::invalidType('$filter', $filter, 'array or object');
+        if (! is_document($filter)) {
+            throw InvalidArgumentException::expectedDocumentType('$filter', $filter);
         }
 
-        if (isset($options['projection']) && ! is_array($options['projection']) && ! is_object($options['projection'])) {
-            throw InvalidArgumentException::invalidType('"projection" option', $options['projection'], 'array or object');
+        if (isset($options['projection']) && ! is_document($options['projection'])) {
+            throw InvalidArgumentException::expectedDocumentType('"projection" option', $options['projection']);
         }
 
         if (isset($options['projection'])) {
@@ -123,8 +121,8 @@ class FindOneAndDelete implements Executable, Explainable
      * @see Explainable::getCommandDocument()
      * @return array
      */
-    public function getCommandDocument(Server $server)
+    public function getCommandDocument()
     {
-        return $this->findAndModify->getCommandDocument($server);
+        return $this->findAndModify->getCommandDocument();
     }
 }
