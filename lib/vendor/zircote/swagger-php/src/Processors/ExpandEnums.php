@@ -41,15 +41,18 @@ class ExpandEnums implements ProcessorInterface
 
                 $schemaType = $schema->type;
                 $enumType = null;
-                if ($re->isBacked() && ($backingType = $re->getBackingType()) && $backingType instanceof \ReflectionNamedType) {
-                    $enumType = $backingType->getName();
+                if ($re->isBacked()) {
+                    $backingType = $re->getBackingType();
+                    if ($backingType instanceof \ReflectionNamedType) {
+                        $enumType = $backingType->getName();
+                    }
                 }
 
                 // no (or invalid) schema type means name
                 $useName = Generator::isDefault($schemaType) || ($enumType && $this->native2spec($enumType) != $schemaType);
 
                 $schema->enum = array_map(function ($case) use ($useName) {
-                    return $useName ? $case->name : $case->getBackingValue();
+                    return ($useName || !($case instanceof \ReflectionEnumBackedCase)) ? $case->name : $case->getBackingValue();
                 }, $re->getCases());
 
                 $schema->type = $useName ? 'string' : $enumType;

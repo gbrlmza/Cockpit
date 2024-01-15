@@ -1,11 +1,11 @@
-function getUppy(meta = {}) {
+function getUppy(meta = {}, bundle = false) {
 
     return new Uppy.Uppy({
         meta,
         autoProceed: false,
         restrictions: {
             maxFileSize: App._vars.maxUploadSize || null,
-            maxNumberOfFiles: App._vars.maxFileUploads || 20,
+            maxNumberOfFiles: bundle ? (App._vars.maxFileUploads || 20) : null,
             minNumberOfFiles: 1,
             //allowedFileTypes: ['image/*', 'video/*']
         },
@@ -20,7 +20,7 @@ function getUppy(meta = {}) {
         headers: {
             'X-CSRF-TOKEN': App.csrf
         },
-        bundle: true
+        bundle,
     }).use(Uppy.Webcam, { target: Uppy.Dashboard, showVideoSourceDropdown: true })
     .use(Uppy.ScreenCapture, { target: Uppy.Dashboard })
     //.use(Uppy.Url, { target: Uppy.Dashboard, companionUrl: 'https://companion.uppy.io' })
@@ -48,7 +48,7 @@ export default {
             page: 1,
             count: 0,
             pages: 1,
-            limit: 15,
+            limit: App.session.get('assets.manager.limit', 15),
 
             view: App.session.get('assets.manager.view', 'cards'),
 
@@ -101,13 +101,32 @@ export default {
             'assets:assets/vendor/spotlight/spotlight.bundle.js',
             'assets:assets/vendor/spotlight/css/spotlight.min.css',
         ]).then(() => {
+
             this.uppy = true;
-        })
+
+            if (this.$el.parentNode) {
+
+                this.$el.parentNode.addEventListener('dragover', (evt) => {
+
+                    if (
+                        evt.dataTransfer.items &&
+                        evt.dataTransfer.items.length > 0 &&
+                        evt.dataTransfer.items[0].kind === 'file'
+                    ) {
+                        this.upload();
+                    }
+                });
+            }
+        });
     },
 
     watch: {
         filter(val) {
             this.txtFilter = val;
+            this.load();
+        },
+        limit(val) {
+            App.session.set('assets.manager.limit', val);
             this.load();
         },
         view(val) {
@@ -314,6 +333,15 @@ export default {
             </ul>
         </div>
 
+        <form class="kiss-margin kiss-flex kiss-flex-middle" v-if="(!loading && (assets.length || folders.length)) || filter" @submit.prevent="filter = txtFilter">
+            <input type="text" class="kiss-input kiss-flex-1 kiss-margin-xsmall-right" :placeholder="t('Search for assets or folders')" v-model="txtFilter">
+
+            <div class="kiss-button-group kiss-margin-small-left">
+                <button type="button" class="kiss-button" @click="filter = ''" v-if="filter">{{ t('Reset') }}</button>
+                <button class="kiss-button kiss-flex">{{ t('Search') }}</button>
+            </div>
+        </form>
+
         <div class="kiss-margin" :class="{'kiss-dialog-overflow': modal}" :expand="modal">
 
             <app-loader v-if="loading"></app-loader>
@@ -329,15 +357,6 @@ export default {
                 </kiss-card>
 
             </kiss-grid>
-
-            <form class="kiss-margin kiss-flex kiss-flex-middle" v-if="(!loading && assets.length) || filter" @submit.prevent="filter = txtFilter">
-                <input type="text" class="kiss-input kiss-flex-1 kiss-margin-xsmall-right" :placeholder="t('Filter assets...')" v-model="txtFilter">
-
-                <div class="kiss-button-group kiss-margin-small-left">
-                    <button type="button" class="kiss-button" @click="filter = ''" v-if="filter">{{ t('Reset') }}</button>
-                    <button class="kiss-button kiss-flex">{{ t('Search') }}</button>
-                </div>
-            </form>
 
             <div class="animated fadeIn kiss-margin-large kiss-color-muted kiss-align-center" :class="{'kiss-height-30vh kiss-flex kiss-flex-middle kiss-flex-center': !modal}" v-if="!loading && !assets.length">
                 <div>
@@ -406,6 +425,12 @@ export default {
                         </select>
                     </div>
                     <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
+                    <div class="kiss-margin-left kiss-overlay-input">
+                        <span class="kiss-color-muted">{{ t('Show') }}:</span> {{ limit}}
+                        <select v-model="limit">
+                            <option v-for="l in [15, 30, 50, 100]" :value="l">{{ l }}</option>
+                        </select>
+                    </div>
                 </app-pagination>
             </div>
             <div class="kiss-flex kiss-flex-middle" gap="" v-if="!loading">
@@ -437,6 +462,12 @@ export default {
                                 </select>
                             </div>
                             <a class="kiss-margin-small-left" v-if="(page + 1) <= pages" @click="load(page + 1)">{{ t('Next') }}</a>
+                            <div class="kiss-margin-left kiss-overlay-input">
+                                <span class="kiss-color-muted">{{ t('Show') }}:</span> {{ limit}}
+                                <select v-model="limit">
+                                    <option v-for="l in [15, 30, 50, 100]" :value="l">{{ l }}</option>
+                                </select>
+                            </div>
                         </app-pagination>
                     </div>
                     <div class="kiss-flex kiss-flex-middle" gap="" v-if="!loading">

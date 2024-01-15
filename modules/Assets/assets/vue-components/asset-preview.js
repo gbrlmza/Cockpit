@@ -5,6 +5,15 @@ let uuid = 0,
     hasWebPSupport = document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp'),
     cache = {};
 
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting || !entry.target.$updatePreview) return;
+        observer.unobserve(entry.target);
+        setTimeout(() => entry.target.$updatePreview());
+    });
+});
+
 export default {
 
     data() {
@@ -12,7 +21,8 @@ export default {
         return {
             uuid: `assetPreview${++uuid}`,
             loading: true,
-            preview: null
+            preview: null,
+            path: null,
         }
     },
 
@@ -29,12 +39,7 @@ export default {
 
     watch: {
         asset: {
-            handler(ov, nv) {
-
-                if (ov?.path === nv?.path) {
-                    return;
-                }
-
+            handler() {
                 setTimeout(() => this.update());
             },
             deep: true
@@ -42,43 +47,53 @@ export default {
     },
 
     mounted() {
-        setTimeout(() => this.update());
+
+        this.$el.$updatePreview = this.update;
+        setTimeout(() => observer.observe(this.$el));
     },
 
     methods: {
 
         update() {
 
+            if (this.path === this.asset.path) {
+                return;
+            }
+
+            this.path = this.asset.path;
             this.preview = null;
 
             if (this.asset.thumbhash) {
                 this.preview = thumbHashToDataURL(this.asset.thumbhash.split('-'))
             }
 
-            if (this.asset.type == 'image') {
-
-                let start = (Date.now()),
-                    delay = 250,
-                    mime = hasWebPSupport ? 'webp' : 'auto',
-                    duration;
-
-                this.$request(`/assets/thumbnail/${this.asset._id}?m=bestFit&mime=${mime}&h=300&t=${this.asset._modified}&re=0&q=70`).then(rsp => {
-
-                    duration = Date.now() - start;
-
-                    setTimeout(() => {
-                        this.preview = rsp.url;
-                        this.loading = false;
-                    }, duration > delay ? 0 : delay - (Date.now() - start));
-                });
-            }
-
-            if (this.asset.type == 'video') {
-                setTimeout(() => this.captureFrame(), 0);
+            if (this.asset.type === 'image') {
+                setTimeout(() => this.captureImageThumbnail(), 0);
+            } else if (this.asset.type === 'video') {
+                setTimeout(() => this.captureVideoThumbnail(), 0);
             }
         },
 
-        captureFrame() {
+        captureImageThumbnail() {
+
+            let start = (Date.now()),
+            delay = 250,
+            mime = hasWebPSupport ? 'webp' : 'auto',
+            duration;
+
+            this.$request(`/assets/thumbnail/${this.asset._id}?m=bestFit&mime=${mime}&h=300&t=${this.asset._modified}&re=0&q=70`).then(rsp => {
+
+                duration = Date.now() - start;
+
+                setTimeout(() => {
+                    this.preview = rsp.url;
+                    this.loading = false;
+                }, duration > delay ? 0 : delay - (Date.now() - start));
+            });
+
+        },
+
+        captureVideoThumbnail() {
 
             let videoURL = this.$base(`#uploads:${this.asset.path}`);
             let timeInSeconds = 2;
@@ -107,6 +122,17 @@ export default {
 
                 cache[this.asset.path] = new Promise((resolve, reject) => {
 
+                    if (App._vars.ffmpeg) {
+
+                        const mime = hasWebPSupport ? 'webp' : 'auto';
+
+                        this.$request(`/assets/thumbnail/${this.asset._id}?m=bestFit&mime=${mime}&h=300&t=${this.asset._modified}&re=0&q=70`).then(rsp => {
+                            resolve(rsp.url);
+                        });
+
+                        return;
+                    }
+
                     let video = document.createElement('video');
 
                     video.onseeked = () => {
@@ -123,7 +149,6 @@ export default {
                     };
 
                     video.muted = true;
-                    video.src = videoURL;
                     video.crossOrigin = 'anonymous';  // may be needed in some cases
 
                     video.onloadedmetadata = () => {
@@ -135,6 +160,8 @@ export default {
                         // seek to time
                         video.currentTime = timeInSeconds;
                     };
+
+                    setTimeout(() => video.src = videoURL, 5);
                 });
             }
 

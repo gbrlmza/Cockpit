@@ -9,6 +9,23 @@ You can find and compare releases at the [GitHub release page](https://github.co
 
 ## Unreleased
 
+## v15.8.1
+
+### Fixed
+
+- Correctly print deprecated argument with default value https://github.com/webonyx/graphql-php/pull/1491
+
+## v15.8.0
+
+### Added
+
+- Early return when complexity is disabled https://github.com/webonyx/graphql-php/pull/1475
+- Allow access to calculated query complexity https://github.com/webonyx/graphql-php/pull/1475
+
+### Fixed
+
+- Fix PHPStan definition for `SchemaConfig` option `types` https://github.com/webonyx/graphql-php/pull/1479
+
 ## v15.7.0
 
 ### Added

@@ -2035,6 +2035,7 @@ app-actionbar {
 }
 app-fieldcontainer {
     display: block;
+    container-type: inline-size;
 }
 app-field[disabled="true"] {
     opacity: .6;
@@ -4394,7 +4395,7 @@ del {
     z-index: 5;
 }
 .has-side-panel .app-container-aside {
-    width: 330px;
+    width: 320px;
 }
 .app-container-aside-menu {
     position: fixed;
@@ -4411,7 +4412,7 @@ del {
     position: fixed;
     display: flex;
     top: 15px;
-    left: 60px;
+    left: 50px;
     padding: 20px 20px;
     flex-direction: column;
     width: 280px;
@@ -4600,6 +4601,15 @@ app-actionbar kiss-container {
     font-weight: normal;
     font-size: 11px;
 }
+.field-multiple-sortable-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 1fr;
+    gap: 10px;
+}
+.field-multiple-sortable-grid > * {
+    min-width: 0;
+}
 .field-layout-dragarea {
     min-height: 47px;
     border-radius: var(--app-border-radius);
@@ -4683,11 +4693,26 @@ kiss-dialog[type="prompt"]>kiss-content {
     }
 
     .has-side-panel app-actionbar {
-        padding-left: 350px;
+        padding-left: 340px;
     }
 
     .app-container-aside {
         display: block;
     }
 
+}
+@container (min-width: 500px) {
+    .field-multiple-sortable-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@container (min-width: 700px) {
+    .field-multiple-sortable-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@container (min-width: 980px) {
+    .field-multiple-sortable-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }

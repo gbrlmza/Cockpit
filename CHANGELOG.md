@@ -1,5 +1,28 @@
 # Release Notes
 
+## WIP
+
+- Lazy loading of asset preview images
+- Update Vue to version 3.4.13
+- Require PHP >=8.2
+- Add vips config option for more performant thumbnail generation
+- Add ffmpeg config option for more video thumbnail generation support
+- Fix download file / folder (Finder)
+- Add alt text info for image assets
+- Render asset field with multiple values as grid
+
+## 2.7.2 (2023-12-30)
+
+- Refactor fields renderer to support custom actions on fields
+- Update Vue to version 3.4.0
+- Sort content models alphabetically on overview page
+- Add config option to store content models in database
+- Fix table field scrollposition jump on editing data
+- Filter also assets folder on simple string based search queries
+- Add assets view limit setting (assets manger view)
+- Trigger upload dialog when dragging files into assets manager
+- Upload assets one by one to overcome max upload size limit
+
 ## 2.7.1 (2023-10-08)
 
 - Fix broken assets loading for asset field with multiple values

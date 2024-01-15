@@ -1,4 +1,4 @@
-import { FieldTypes } from "../js/settings.js";
+import { FieldTypes } from "../../js/settings.js";
 
 let fuid = 0;
 
@@ -37,6 +37,12 @@ let FieldRenderer = {
         }
     },
 
+    mounted() {
+        FieldTypes.get().then(types => {
+            this.fieldTypes = types;
+        });
+    },
+
     props: {
         modelValue: {
             default: undefined
@@ -62,10 +68,23 @@ let FieldRenderer = {
         }
     },
 
-    mounted() {
-        FieldTypes.get().then(types => {
-            this.fieldTypes = types;
-        });
+    computed: {
+        multipleListMode() {
+
+            const allowed = ['list', 'grid'];
+
+            let mode = 'list';
+
+            if (this.fieldTypes[this.field.type]?.multipleListMode) {
+                mode = this.fieldTypes[this.field.type].multipleListMode;
+            }
+
+            if (this.field.meta?.multipleListMode) {
+                mode = this.field.meta.multipleListMode;
+            }
+
+            return allowed.includes(mode) ? mode : 'list';
+        }
     },
 
     methods: {
@@ -179,7 +198,25 @@ let FieldRenderer = {
                     <div class="kiss-margin-small kiss-size-small">{{ t('No items') }}</div>
                 </kiss-card>
 
-                <vue-draggable v-model="val" handle=".fm-handle" v-if="Array.isArray(val)">
+                <vue-draggable class="field-multiple-sortable-grid" v-model="val" v-if="multipleListMode=='grid' && Array.isArray(val)">
+                    <template #item="{ element, index }">
+                        <kiss-card class="kiss-padding-small kiss-flex" gap="small" theme="bordered contrast">
+                            <div class="kiss-position-relative kiss-size-small kiss-flex-1">
+                                <span class="kiss-badge kiss-badge-outline kiss-color-muted" v-if="val[index] == null">n/a</span>
+                                <div class="kiss-text-truncate" v-else-if="fieldTypes[field.type]?.render" v-html="fieldTypes[field.type].render(val[index], field)"></div>
+                                <div v-else>
+                                    <span class="kiss-badge kiss-badge-outline" v-if="Array.isArray(val[index])">{{ val[index].length }}</span>
+                                    <span class="kiss-badge kiss-badge-outline" v-else-if="typeof(val[index]) === 'object'">Object</span>
+                                    <div class="kiss-text-truncate" v-else>{{ val[index] }}</div>
+                                </div>
+                                <a class="kiss-cover" @click="editFieldItem(field, index)"></a>
+                            </div>
+                            <a @click="actionItem = element"><icon>more_vert</icon></a>
+                        </kiss-card>
+                    </template>
+                </vue-draggable>
+
+                <vue-draggable v-model="val" handle=".fm-handle" v-if="multipleListMode=='list' && Array.isArray(val)">
                     <template #item="{ element, index }">
                         <div class="kiss-margin-small kiss-flex kiss-flex-middle">
                             <kiss-card class="kiss-flex-1 kiss-padding-small kiss-flex kiss-flex-middle" gap="small" theme="bordered contrast">
@@ -264,13 +301,13 @@ let FieldRenderer = {
                             <li v-if="val.indexOf(actionItem) !== 0">
                                 <a class="kiss-flex kiss-flex-middle" @click="val.unshift(val.splice(val.indexOf(actionItem), 1)[0])">
                                     <icon class="kiss-margin-small-right">arrow_upward</icon>
-                                    {{ t('Move to top') }}
+                                    {{ t('Move first') }}
                                 </a>
                             </li>
                             <li v-if="val.indexOf(actionItem) !== val.length - 1">
                                 <a class="kiss-flex kiss-flex-middle" @click="val.push(val.splice(val.indexOf(actionItem), 1)[0])">
                                     <icon class="kiss-margin-small-right">arrow_downward</icon>
-                                    {{ t('Move to bottom') }}
+                                    {{ t('Move last') }}
                                 </a>
                             </li>
                             <li class="kiss-nav-divider"></li>
@@ -297,6 +334,7 @@ export default {
             val: this.modelValue,
             group: null,
             uid: `app-fr-${++fuid}`,
+            fieldActions: [],
         }
     },
 
@@ -319,6 +357,10 @@ export default {
             type: String,
             default: null
         },
+    },
+
+    beforeMount() {
+        App.trigger('fields-renderer-init', {form: this});
     },
 
     mounted() {
@@ -518,13 +560,16 @@ export default {
 
             <app-fieldcontainer :id="uid+'-'+field.name" class="kiss-margin" :class="{'kiss-disabled': field.opts && field.opts.readonly}" v-for="field in visibleFields">
                 <div>
-                    <div class="kiss-flex kiss-flex-middle">
+                    <div class="kiss-flex kiss-flex-middle" gap="small">
                         <label class="fields-renderer-field kiss-text-capitalize kiss-flex kiss-flex-middle kiss-flex-1">
                             <div>{{field.label || field.name}}</div>
                             <icon class="kiss-size-5 kiss-color-muted kiss-margin-xsmall-left" v-if="field.i18n && locales.length" :title="t('Localized')">language</icon>
                             <icon class="kiss-size-5 kiss-color-danger kiss-margin-xsmall-left" v-if="field.required" :title="t('Required')">trip_origin</icon>
                         </label>
-                        <a class="app-fieldcontainer-visible-hover kiss-margin-left" :class="{'kiss-color-muted': nested}" @click="clear(field, val)" :aria-label="t('Clear') + ': ' + (field.label || field.name)" kiss-tooltip="right" v-if="field.opts && !field.opts.readonly"><icon>backspace</icon></a>
+                        <div class="kiss-flex kiss-flex-middle app-fieldcontainer-visible-hover" gap="small" v-if="fieldActions.length && !field.i18n">
+                            <component :is="action.component" v-model="val[field.name]" :document="val"  :field="field" :locale="locale" v-for="action in fieldActions"></component>
+                        </div>
+                        <a class="app-fieldcontainer-visible-hover" :class="{'kiss-color-muted': nested}" @click="clear(field, val)" :aria-label="t('Clear') + ': ' + (field.label || field.name)" kiss-tooltip="right" v-if="field.opts && !field.opts.readonly"><icon>backspace</icon></a>
                     </div>
                 </div>
                 <div class="kiss-color-muted kiss-size-xsmall" v-if="field.info">{{ field.info }}</div>
@@ -535,20 +580,26 @@ export default {
 
                 <div class="kiss-margin-small-top" v-if="field.i18n && locales.length">
                     <div class="kiss-margin" v-for="locale in visibleLocales">
-                        <div class="kiss-margin-small kiss-flex kiss-flex-middle kiss-visible-toggle" v-if="Array.isArray(locales) && locales.length > 1">
-                            <span class="kiss-badge kiss-badge-outline kiss-color-primary">{{ locale.i18n }}</span>
-                            <kiss-dropdown class="kiss-margin-small-left">
-                                <a class="kiss-invisible-hover kiss-color-muted" :ariaLabel="t('Copy value from another locale')" kiss-tooltip="right"><icon>content_copy</icon></a>
+                        <div class="kiss-flex kiss-flex-middle" gap="small">
+                            <div class="kiss-margin-small kiss-flex kiss-flex-middle kiss-visible-toggle" v-if="Array.isArray(locales) && locales.length > 1">
+                                <span class="kiss-badge kiss-badge-outline kiss-color-primary">{{ locale.i18n }}</span>
+                                <kiss-dropdown class="kiss-margin-small-left">
+                                    <a class="kiss-invisible-hover kiss-color-muted" :ariaLabel="t('Copy value from another locale')" kiss-tooltip="right"><icon>content_copy</icon></a>
 
-                                <kiss-dropdownbox pos="left">
-                                    <kiss-navlist>
-                                        <ul>
-                                            <li class="kiss-nav-header">{{ t('Locale') }}</li>
-                                            <li :class="{'kiss-hidden': l.i18n == locale.i18n}" v-for="l in locales"><a @click="copyLocaleValue(locale.i18n, l.i18n, field.name)">{{ l.name }}</a></li>
-                                        </ul>
-                                    </kiss-navlist>
-                                </kiss-dropdownbox>
-                            </kiss-dropdown>
+                                    <kiss-dropdownbox pos="left">
+                                        <kiss-navlist>
+                                            <ul>
+                                                <li class="kiss-nav-header">{{ t('Locale') }}</li>
+                                                <li :class="{'kiss-hidden': l.i18n == locale.i18n}" v-for="l in locales"><a @click="copyLocaleValue(locale.i18n, l.i18n, field.name)">{{ l.name }}</a></li>
+                                            </ul>
+                                        </kiss-navlist>
+                                    </kiss-dropdownbox>
+                                </kiss-dropdown>
+                            </div>
+                            <div class="kiss-flex-1"></div>
+                            <div class="kiss-flex kiss-flex-middle app-fieldcontainer-visible-hover" gap="small" v-if="fieldActions.length">
+                                <component :is="action.component" v-model="val[field.name+(locale.i18n === 'default' ? '': '_'+locale.i18n)]" :document="val" :field="field" :locale="locale.i18n" v-for="action in fieldActions"></component>
+                            </div>
                         </div>
                         <field-renderer :field="field" :locale="locale.i18n" v-model="val[field.name+(locale.i18n === 'default' ? '': '_'+locale.i18n)]"></field-renderer>
                     </div>

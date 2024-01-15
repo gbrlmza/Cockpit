@@ -1,6 +1,6 @@
 <?php
 
-const APP_VERSION = '2.7.1';
+const APP_VERSION = '2.7.2';
 
 if (!defined('APP_ADMIN')) define('APP_ADMIN', false);
 if (!defined('APP_CLI')) define('APP_CLI', PHP_SAPI == 'cli');
@@ -13,6 +13,13 @@ require_once(__DIR__.'/lib/_autoload.php');
 
 // load .env file if exists
 DotEnv::load(APP_DIR);
+
+if (!function_exists('env')) {
+
+    function env($key, $default = null) {
+        return DotEnv::value($key, $default);
+    }
+}
 
 class Cockpit {
 
