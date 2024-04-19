@@ -28,7 +28,7 @@
 
             <kiss-tabs>
 
-                <tab class="kiss-margin animated fadeIn" caption="<?=t('App')?>">
+                <tab class="kiss-margin animated fadeIn" caption="<?=t('System')?>">
 
                     <div class="kiss-text-caption kiss-text-bold kiss-size-bold kiss-margin">
                         <?=('General')?>
@@ -38,7 +38,7 @@
                         <tbody>
                             <tr>
                                 <td width="30%" class="kiss-size-xsmall">Version</td>
-                                <td class="kiss-size-small kiss-color-muted"><?=APP_VERSION?></td>
+                                <td class="kiss-size-small kiss-text-monospace kiss-color-muted"><?=APP_VERSION?></td>
                             </tr>
                             <tr>
                                 <td width="30%" class="kiss-size-xsmall">Debug mode</td>
@@ -46,11 +46,11 @@
                             </tr>
                             <tr>
                                 <td width="30%" class="kiss-size-xsmall">Assets url</td>
-                                <td class="kiss-size-small kiss-color-muted kiss-text-truncate">{{ $base('#uploads:') }}</td>
+                                <td class="kiss-size-small kiss-text-monospace kiss-color-muted kiss-text-truncate">{{ $base('#uploads:') }}</td>
                             </tr>
                             <tr>
                                 <td width="30%" class="kiss-size-xsmall">Datastorage</td>
-                                <td class="kiss-size-small kiss-color-muted"><?=$this->dataStorage->type?></td>
+                                <td class="kiss-size-small kiss-text-monospace kiss-color-muted"><?=$this->dataStorage->type?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -107,20 +107,21 @@
 
                 </tab>
 
+                <?php if ($this->helper('acl')->isSuperAdmin() && $this->helper('spaces')->isMaster()): ?>
                 <tab class="kiss-margin animated fadeIn" caption="PHP">
 
                     <table class="kiss-table">
                         <tbody>
-                            <tr><td width="30%">Version</td><td class="kiss-color-muted"><?=phpversion()?></td></tr>
-                            <tr><td>PHP SAPI</td><td class="kiss-color-muted"><?=php_sapi_name()?></td></tr>
-                            <tr><td>System</td><td class="kiss-color-muted"><?=php_uname()?></td></tr>
-                            <tr><td>Extensions</td><td class="kiss-color-muted"><?=implode(', ', get_loaded_extensions())?></td></tr>
-                            <tr><td>Supported image types</td><td class="kiss-color-muted"><?=implode(', ', $supportedImageTypes)?></td></tr>
-                            <tr><td>Max. execution time</td><td class="kiss-color-muted"><?=ini_get('max_execution_time')?> sec.</td></tr>
-                            <tr><td>Memory limit</td><td class="kiss-color-muted"><?=ini_get("memory_limit")?></td></tr>
-                            <tr><td>Upload file size limit</td><td class="kiss-color-muted"><?=ini_get("upload_max_filesize")?></td></tr>
-                            <tr><td>Realpath Cache</td><td class="kiss-color-muted"><?=ini_get("realpath_cache_size")?> / <?=ini_get("realpath_cache_ttl")?> (ttl)</td></tr>
-                            <tr><td>System temporary directory</td><td class="kiss-color-muted"><?=sys_get_temp_dir()?></td></tr>
+                            <tr><td width="30%">Version</td><td class="kiss-text-monospace kiss-color-muted"><?=phpversion()?></td></tr>
+                            <tr><td>PHP SAPI</td><td class="kiss-text-monospace kiss-color-muted"><?=php_sapi_name()?></td></tr>
+                            <tr><td>System</td><td class="kiss-text-monospace kiss-color-muted"><?=php_uname()?></td></tr>
+                            <tr><td>Extensions</td><td class="kiss-text-monospace kiss-color-muted"><?=implode(', ', get_loaded_extensions())?></td></tr>
+                            <tr><td>Supported image types</td><td class="kiss-text-monospace kiss-color-muted"><?=implode(', ', $supportedImageTypes)?></td></tr>
+                            <tr><td>Max. execution time</td><td class="kiss-text-monospace kiss-color-muted"><?=ini_get('max_execution_time')?> sec.</td></tr>
+                            <tr><td>Memory limit</td><td class="kiss-text-monospace kiss-color-muted"><?=ini_get("memory_limit")?></td></tr>
+                            <tr><td>Upload file size limit</td><td class="kiss-text-monospace kiss-color-muted"><?=ini_get("upload_max_filesize")?></td></tr>
+                            <tr><td>Realpath Cache</td><td class="kiss-text-monospace kiss-color-muted"><?=ini_get("realpath_cache_size")?> / <?=ini_get("realpath_cache_ttl")?> (ttl)</td></tr>
+                            <tr><td>System temporary directory</td><td class="kiss-text-monospace kiss-color-muted"><?=sys_get_temp_dir()?></td></tr>
                             <tr>
                                 <td>OPCache</td>
                                 <td><span class="kiss-badge kiss-badge-outline kiss-color-<?=(ini_get("opcache.enable") ? 'success':'danger')?>"><?=(ini_get("opcache.enable") ? 'Enabled':'Disabled')?></span></td>
@@ -130,18 +131,23 @@
                     </table>
 
                 </tab>
+                <?php endif ?>
 
-                <?php if ($this->helper('acl')->isSuperAdmin()): ?>
+                <?php if ($this->helper('acl')->isSuperAdmin() && $this->helper('spaces')->isMaster()): ?>
                 <tab class="kiss-margin animated fadeIn" caption="<?=t('Env')?>">
 
-                    <table class="kiss-table" style="word-break: break-all;">
+                    <app-loader v-if="loadingEnv"></app-loader>
+
+                    <div class="kiss-padding-large kiss-align-center" v-if="!env && !loadingEnv">
+                        <button type="button" class="kiss-button" @click="getEnvVars()">{{ t('Load environment variables') }}</button>
+                    </div>
+
+                    <table class="kiss-table" style="word-break: break-all;" v-if="env">
                         <tbody>
-                            <?php foreach(getenv() as $key => $value): ?>
-                            <tr>
-                                <td width="30%" class="kiss-size-small"><div class="kiss-size-xsmall"><?=$key?></div></td>
-                                <td width="70%" class="kiss-color-muted"><div class="kiss-size-xsmall"><?=$value?></div></td>
+                            <tr v-for="(val, key) in env">
+                                <td width="30%" class="kiss-size-small"><div class="kiss-size-xsmall">{{ key }}</div></td>
+                                <td width="70%" class="kiss-text-monospace kiss-color-muted"><div class="kiss-size-xsmall">{{ val }}</div></td>
                             </tr>
-                            <?php endforeach ?>
                         </tbody>
                     </table>
 
@@ -156,6 +162,13 @@
 
             export default {
 
+                data() {
+                    return {
+                        env: null,
+                        loadingEnv: false
+                    }
+                },
+
                 methods: {
                     clearCache() {
 
@@ -167,6 +180,28 @@
                                 App.ui.unblock();
                                 App.ui.notify('Cache cleared!');
                             });
+                        });
+                    },
+
+                    getEnvVars() {
+
+                        App.ui.prompt('Action verification', '', (password) => {
+
+                            if (!password) return
+
+                            this.loadingEnv = true;
+
+                            this.$request('/system/utils/env', {password}).then(res => {
+                                this.env = res.env;
+                            }).catch(res => {
+                                App.ui.notify(res.error || 'Loading failed!', 'error');
+                            }).finally(() => {
+                                this.loadingEnv = false;
+                            });
+
+                        }, {
+                            type: 'password',
+                            info: 'Please enter your password to verify this action'
                         });
                     }
                 }

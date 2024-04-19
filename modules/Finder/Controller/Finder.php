@@ -14,6 +14,8 @@ class Finder extends App {
         if (!$this->helper('acl')->isSuperAdmin()) {
             return $this->stop(401);
         }
+
+        $this->helper('session')->close();
     }
 
     public function index() {
@@ -28,7 +30,6 @@ class Finder extends App {
 
     public function api() {
 
-        $this->helper('session')->close();
         $this->hasValidCsrfToken(true);
 
         $root = $this->param('root');
@@ -179,10 +180,11 @@ class Finder extends App {
         if (!$path) return false;
 
         $name = $this->param('name', false);
+        $file = $this->root.'/'.trim($path, '/').'/'.$name;
         $ret  = false;
 
         if ($name && $this->_isFileTypeAllowed($name) && $path) {
-            $ret = @file_put_contents($this->root.'/'.trim($path, '/').'/'.$name, '');
+            $ret = @file_put_contents($file, '');
         }
 
         return json_encode(['success' => $ret]);
@@ -237,7 +239,12 @@ class Finder extends App {
 
         $name = $this->param('name', false);
 
+        if (!$this->_isValidFilename($name)) {
+            return $this->stop(['error' => 'Invalid file name'], 412);
+        }
+
         if ($path && $name && $this->_isFileTypeAllowed($name)) {
+
             $source = $this->root.'/'.trim($path, '/');
             $target = dirname($source).'/'.$name;
 
@@ -439,7 +446,7 @@ class Finder extends App {
 
             $path = trim($path);
 
-            if (strpos($path, '../') !== false) {
+            if (str_contains($path, '../')) {
                 $path = false;
             }
         }
@@ -462,6 +469,21 @@ class Finder extends App {
         $allowed = str_replace([' ', ','], ['', '|'], preg_quote(is_array($allowed) ? implode(',', $allowed) : $allowed));
 
         return preg_match("/\.({$allowed})$/i", $file);
+    }
+
+    protected function _isValidFilename($filename) {
+
+        // Basic check to exclude directory traversal attempts and null byte
+        if (strpos($filename, '../') !== false || strpos($filename, '..\\') !== false || strpos($filename, "\0") !== false) {
+            return false;
+        }
+
+        // Regular expression to check for invalid characters
+        if (preg_match('/[\/:*?"<>|]/', $filename)) {
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -119,7 +119,7 @@
 
                     this.$request('/auth/check', {
                         auth: this.auth,
-                        csrf: "<?= $this->helper('csrf')->token('login') ?>"
+                        csrf: "<?= $csrfToken ?>"
                     }).then(rsp => {
 
                         this.loading = false;
@@ -146,7 +146,14 @@
                             setTimeout(() => window.location = '<?= $redirectTo ?>', 1500);
                         }
 
-                    }, rsp => {
+                    }, (rsp) => {
+
+                        if (rsp?.error === 'APP_LOGIN_SESSION_INVALID') {
+                            App.ui.notify('Login session expired.', 'error');
+                            setTimeout(() => location.reload() , 600);
+                            return;
+                        }
+
                         this.loading = false;
                         App.ui.notify(rsp && (rsp.message || rsp.error) ? (rsp.message || rsp.error) : '<?= t('Login failed.') ?>', 'error');
                     });

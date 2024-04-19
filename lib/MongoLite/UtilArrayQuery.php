@@ -61,11 +61,11 @@ class UtilArrayQuery {
 
                     $d = '$document';
 
-                    if (\strpos($key, '(') !== false || \strpos($key, '"') !== false || \strpos($key, "'") !== false) {
+                    if (\str_contains($key, '(') || \str_contains($key, '"') || \str_contains($key, "'")) {
                         throw new \InvalidArgumentException('Unallowed characters used in filter keys');
                     }
 
-                    if (\strpos($key, '.') !== false) {
+                    if (\str_contains($key, '.')) {
 
                         $keys = \explode('.', $key);
 
@@ -209,9 +209,17 @@ class UtilArrayQuery {
             case '$preg' :
             case '$match' :
 
-                if (is_string($a) && is_string($b)) {
-                    $r = (boolean) \preg_match(isset($b[0]) && $b[0]=='/' ? $b : '/'.$b.'/iu', $a);
+                if (is_string($b)) {
+
+                    $b = isset($b[0]) && $b[0]=='/' ? $b : '/'.$b.'/iu';
+
+                    if (is_string($a)) {
+                        $r = (boolean) \preg_match($b, $a);
+                    } elseif (is_countable($a)) {
+                        $r = (boolean) \preg_match($b, implode(' ', $a));
+                    }
                 }
+
                 break;
 
             case '$ne':
@@ -293,7 +301,7 @@ function fuzzy_search(string $search, string $text, $distance = 3): float {
 
         foreach ($tokens as $token) {
 
-            if (\strpos($token, $needle) !== false) {
+            if (\str_contains($token, $needle)) {
                 $score += 1;
             } else {
 

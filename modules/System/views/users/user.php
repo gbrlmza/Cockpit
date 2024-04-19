@@ -223,18 +223,25 @@ if (!isset($user['twofa'])) {
                                 user: this.user,
                                 password: pwdVerification,
                             }).then(user => {
+
                                 this.user = user;
-                                this.saving = false;
 
                                 if (isUpdate) {
                                     App.ui.notify('User updated!');
                                 } else {
                                     App.ui.notify('User created!');
                                 }
+
+                                // reload to get the new csrf token
+                                if (App.user._id === user._id) {
+                                    setTimeout(() => location.reload(), 600);
+                                }
+
                             }).catch(res => {
-                                this.saving = false;
                                 App.ui.notify(res.error || 'Saving failed!', 'error');
-                            })
+                            }).finally(() => {
+                                this.saving = false;
+                            });
                         };
 
                         if (!isUpdate) {

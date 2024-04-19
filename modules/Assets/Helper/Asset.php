@@ -10,8 +10,11 @@ class Asset extends \Lime\Helper {
 
     protected ?Vips $vips = null;
     protected ?Ffmpeg $ffmpeg = null;
+    protected ?string $storage = null;
 
     protected function initialize() {
+
+        $this->storage = $this->app->retrieve('assets/storage', 'tmp://thumbs');
 
         $useVips = $this->app->retrieve('assets/vips');
 
@@ -29,7 +32,7 @@ class Asset extends \Lime\Helper {
     public function image(array $options = [], bool $asPath = false) {
 
         $options = array_merge([
-            'cachefolder' => 'tmp://thumbs',
+            'storage' => $this->storage,
             'src' => '',
             'mode' => 'thumbnail',
             'mime' => null,
@@ -57,7 +60,7 @@ class Asset extends \Lime\Helper {
 
         if (!$rebuild && $mime) {
 
-            $thumbpath = $cachefolder."/{$hash}";
+            $thumbpath = $storage."/{$hash}";
 
             if ($this->app->fileStorage->fileExists($thumbpath)) {
 
@@ -72,13 +75,13 @@ class Asset extends \Lime\Helper {
         $src = rawurldecode($src);
 
         // normalize path
-        if (strpos($src, '../') !== false) {
+        if (str_contains($src, '../')) {
             $src = implode('/', array_filter(explode('/', $src), fn ($s) => trim($s, '.')));
         }
 
         $options['src'] = $src;
 
-        if (\strpos($src, 'uploads://') === 0) {
+        if (\str_starts_with($src, 'uploads://')) {
 
             $options['src'] = \str_replace('uploads://', '', $src);
 
@@ -95,7 +98,7 @@ class Asset extends \Lime\Helper {
 
         $asset = null;
 
-        if (\strpos($src, 'assets://') === 0) {
+        if (\str_starts_with($src, 'assets://')) {
             $asset = ['path' => \str_replace('assets://', '', $src)];
         } elseif (!preg_match('/\.(png|jpg|jpeg|gif|svg|webp)$/i', $src)) {
             $asset = $this->app->dataStorage->findOne('assets', ['_id' => $src]);
@@ -195,8 +198,8 @@ class Asset extends \Lime\Helper {
             $mode = 'thumbnail';
         }
 
-        if (substr($mime, 0, 6) == 'image/') $mime = substr($mime, 6);
-        if ($mime == 'jpg') $mime = 'jpeg';
+        if ($mime && substr($mime, 0, 6) == 'image/') $mime = substr($mime, 6);
+        if ($mime === 'jpg') $mime = 'jpeg';
 
         if ($mime && in_array($mime, ['avif', 'gif', 'jpeg', 'png', 'webp', 'bmp'])) {
             $ext = $mime;
@@ -212,7 +215,7 @@ class Asset extends \Lime\Helper {
         $method = $mode;
 
         $hash = $hash ?? md5(json_encode($options))."_{$quality}_{$mode}.{$ext}";
-        $thumbpath = $cachefolder."/{$hash}";
+        $thumbpath = $storage."/{$hash}";
 
         if ($rebuild || !$this->app->fileStorage->fileExists($thumbpath)) {
 
@@ -301,5 +304,36 @@ class Asset extends \Lime\Helper {
         }
 
         return $img;
+    }
+
+    public function updateRefs(array $array): array {
+
+        static $refs;
+
+        if (is_null($refs)) $refs = [];
+
+        if (!is_array($array)) {
+            return $array;
+        }
+
+        foreach ($array as $k => $v) {
+
+            if (is_array($array[$k])) {
+                $array[$k] = $this->updateRefs($array[$k]);
+            }
+
+            // check if is asset
+            if (isset($v['_id'], $v['path'], $v['mime'], $v['type'])) {
+
+                if (!isset($refs[$v['_id']])) {
+                    $refs[$v['_id']] = $this->app->dataStorage->findOne('assets', ['_id' => $v['_id']]);;
+                }
+
+                // update with latest asset data
+                $array[$k] = $refs[$v['_id']];
+            }
+        }
+
+        return $array;
     }
 }

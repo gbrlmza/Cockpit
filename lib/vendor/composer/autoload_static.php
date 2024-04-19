@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5723017241f53032fa5adda76b6b8857
+class ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -16,13 +16,12 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
-        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '7aed44d824e149ce152c0fb82af9379a' => __DIR__ . '/..' . '/colinodell/json5/src/global.php',
         '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
-        '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
     );
 
@@ -34,7 +33,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'S' => 
         array (
             'Symfony\\Polyfill\\Php83\\' => 23,
-            'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Polyfill\\Php81\\' => 23,
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Php73\\' => 23,
@@ -81,7 +79,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'J' => 
         array (
             'JmesPath\\' => 9,
-            'Jean85\\' => 7,
         ),
         'G' => 
         array (
@@ -123,10 +120,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'Symfony\\Polyfill\\Php83\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
-        ),
-        'Symfony\\Polyfill\\Php82\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
         ),
         'Symfony\\Polyfill\\Php81\\' => 
         array (
@@ -241,10 +234,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         array (
             0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
-        'Jean85\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/jean85/pretty-package-versions/src',
-        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -329,7 +318,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
         'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
-        'AllowDynamicProperties' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/AllowDynamicProperties.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Aws\\AbstractConfigurationProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/AbstractConfigurationProvider.php',
         'Aws\\Api\\AbstractModel' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Api/AbstractModel.php',
@@ -387,6 +375,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'Aws\\Arn\\S3\\OutpostsAccessPointArn' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Arn/S3/OutpostsAccessPointArn.php',
         'Aws\\Arn\\S3\\OutpostsArnInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Arn/S3/OutpostsArnInterface.php',
         'Aws\\Arn\\S3\\OutpostsBucketArn' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Arn/S3/OutpostsBucketArn.php',
+        'Aws\\Auth\\Exception\\UnresolvedAuthSchemeException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Auth/Exception/UnresolvedAuthSchemeException.php',
         'Aws\\AwsClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/AwsClient.php',
         'Aws\\AwsClientInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/AwsClientInterface.php',
         'Aws\\AwsClientTrait' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/AwsClientTrait.php',
@@ -410,6 +399,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'Aws\\Credentials\\CredentialProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialProvider.php',
         'Aws\\Credentials\\Credentials' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/Credentials.php',
         'Aws\\Credentials\\CredentialsInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialsInterface.php',
+        'Aws\\Credentials\\CredentialsUtils' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialsUtils.php',
         'Aws\\Credentials\\EcsCredentialProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/EcsCredentialProvider.php',
         'Aws\\Credentials\\InstanceProfileProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/InstanceProfileProvider.php',
         'Aws\\Crypto\\AbstractCryptoClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Crypto/AbstractCryptoClient.php',
@@ -709,9 +699,9 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'ColorThief\\Image\\ImageLoader' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/Image/ImageLoader.php',
         'ColorThief\\PQueue' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/PQueue.php',
         'ColorThief\\VBox' => __DIR__ . '/..' . '/ksubileau/color-thief-php/src/ColorThief/VBox.php',
-        'ComposerAutoloaderInit5723017241f53032fa5adda76b6b8857' => __DIR__ . '/..' . '/composer/autoload_real.php',
+        'ComposerAutoloaderInitfb114fa4d291ebdea911cfa961c2cd9b' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
-        'Composer\\Autoload\\ComposerStaticInit5723017241f53032fa5adda76b6b8857' => __DIR__ . '/..' . '/composer/autoload_static.php',
+        'Composer\\Autoload\\ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\BinProxyWrapper' => __DIR__ . '/..' . '/bin/jp.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DASPRiD\\Enum\\AbstractEnum' => __DIR__ . '/..' . '/dasprid/enum/src/AbstractEnum.php',
@@ -860,6 +850,20 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'GraphQL\\Language\\VisitorRemoveNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorRemoveNode.php',
         'GraphQL\\Language\\VisitorSkipNode' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorSkipNode.php',
         'GraphQL\\Language\\VisitorStop' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Language/VisitorStop.php',
+        'GraphQL\\Server\\Exception\\BatchedQueriesAreNotSupported' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/BatchedQueriesAreNotSupported.php',
+        'GraphQL\\Server\\Exception\\CannotParseJsonBody' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/CannotParseJsonBody.php',
+        'GraphQL\\Server\\Exception\\CannotParseVariables' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/CannotParseVariables.php',
+        'GraphQL\\Server\\Exception\\CannotReadBody' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/CannotReadBody.php',
+        'GraphQL\\Server\\Exception\\FailedToDetermineOperationType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/FailedToDetermineOperationType.php',
+        'GraphQL\\Server\\Exception\\GetMethodSupportsOnlyQueryOperation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/GetMethodSupportsOnlyQueryOperation.php',
+        'GraphQL\\Server\\Exception\\HttpMethodNotSupported' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/HttpMethodNotSupported.php',
+        'GraphQL\\Server\\Exception\\InvalidOperationParameter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/InvalidOperationParameter.php',
+        'GraphQL\\Server\\Exception\\InvalidQueryIdParameter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/InvalidQueryIdParameter.php',
+        'GraphQL\\Server\\Exception\\InvalidQueryParameter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/InvalidQueryParameter.php',
+        'GraphQL\\Server\\Exception\\MissingContentTypeHeader' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/MissingContentTypeHeader.php',
+        'GraphQL\\Server\\Exception\\MissingQueryOrQueryIdParameter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/MissingQueryOrQueryIdParameter.php',
+        'GraphQL\\Server\\Exception\\PersistedQueriesAreNotSupported' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/PersistedQueriesAreNotSupported.php',
+        'GraphQL\\Server\\Exception\\UnexpectedContentType' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Exception/UnexpectedContentType.php',
         'GraphQL\\Server\\Helper' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/Helper.php',
         'GraphQL\\Server\\OperationParams' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/OperationParams.php',
         'GraphQL\\Server\\RequestError' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Server/RequestError.php',
@@ -1067,11 +1071,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'IndexLite\\Manager' => __DIR__ . '/../../..' . '/lib/IndexLite/Manager.php',
         'JSONStream\\CollectionReader' => __DIR__ . '/../../..' . '/lib/JSONStream/CollectionReader.php',
         'JSONStream\\CollectionWriter' => __DIR__ . '/../../..' . '/lib/JSONStream/CollectionWriter.php',
-        'Jean85\\Exception\\ProvidedPackageException' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Exception/ProvidedPackageException.php',
-        'Jean85\\Exception\\ReplacedPackageException' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Exception/ReplacedPackageException.php',
-        'Jean85\\Exception\\VersionMissingExceptionInterface' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Exception/VersionMissingExceptionInterface.php',
-        'Jean85\\PrettyVersions' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/PrettyVersions.php',
-        'Jean85\\Version' => __DIR__ . '/..' . '/jean85/pretty-package-versions/src/Version.php',
         'JmesPath\\AstRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/AstRuntime.php',
         'JmesPath\\CompilerRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/CompilerRuntime.php',
         'JmesPath\\DebugRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/DebugRuntime.php',
@@ -1174,6 +1173,12 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\BulkWriteResult' => __DIR__ . '/..' . '/mongodb/mongodb/src/BulkWriteResult.php',
         'MongoDB\\ChangeStream' => __DIR__ . '/..' . '/mongodb/mongodb/src/ChangeStream.php',
         'MongoDB\\Client' => __DIR__ . '/..' . '/mongodb/mongodb/src/Client.php',
+        'MongoDB\\Codec\\Codec' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/Codec.php',
+        'MongoDB\\Codec\\DecodeIfSupported' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/DecodeIfSupported.php',
+        'MongoDB\\Codec\\Decoder' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/Decoder.php',
+        'MongoDB\\Codec\\DocumentCodec' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/DocumentCodec.php',
+        'MongoDB\\Codec\\EncodeIfSupported' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/EncodeIfSupported.php',
+        'MongoDB\\Codec\\Encoder' => __DIR__ . '/..' . '/mongodb/mongodb/src/Codec/Encoder.php',
         'MongoDB\\Collection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Collection.php',
         'MongoDB\\Command\\ListCollections' => __DIR__ . '/..' . '/mongodb/mongodb/src/Command/ListCollections.php',
         'MongoDB\\Command\\ListDatabases' => __DIR__ . '/..' . '/mongodb/mongodb/src/Command/ListDatabases.php',
@@ -1187,10 +1192,12 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Exception\\RuntimeException' => __DIR__ . '/..' . '/mongodb/mongodb/src/Exception/RuntimeException.php',
         'MongoDB\\Exception\\UnexpectedValueException' => __DIR__ . '/..' . '/mongodb/mongodb/src/Exception/UnexpectedValueException.php',
         'MongoDB\\Exception\\UnsupportedException' => __DIR__ . '/..' . '/mongodb/mongodb/src/Exception/UnsupportedException.php',
+        'MongoDB\\Exception\\UnsupportedValueException' => __DIR__ . '/..' . '/mongodb/mongodb/src/Exception/UnsupportedValueException.php',
         'MongoDB\\GridFS\\Bucket' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/Bucket.php',
         'MongoDB\\GridFS\\CollectionWrapper' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/CollectionWrapper.php',
         'MongoDB\\GridFS\\Exception\\CorruptFileException' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/Exception/CorruptFileException.php',
         'MongoDB\\GridFS\\Exception\\FileNotFoundException' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/Exception/FileNotFoundException.php',
+        'MongoDB\\GridFS\\Exception\\LogicException' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/Exception/LogicException.php',
         'MongoDB\\GridFS\\Exception\\StreamException' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/Exception/StreamException.php',
         'MongoDB\\GridFS\\ReadableStream' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/ReadableStream.php',
         'MongoDB\\GridFS\\StreamWrapper' => __DIR__ . '/..' . '/mongodb/mongodb/src/GridFS/StreamWrapper.php',
@@ -1204,6 +1211,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Model\\CachingIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CachingIterator.php',
         'MongoDB\\Model\\CallbackIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CallbackIterator.php',
         'MongoDB\\Model\\ChangeStreamIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/ChangeStreamIterator.php',
+        'MongoDB\\Model\\CodecCursor' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CodecCursor.php',
         'MongoDB\\Model\\CollectionInfo' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CollectionInfo.php',
         'MongoDB\\Model\\CollectionInfoCommandIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CollectionInfoCommandIterator.php',
         'MongoDB\\Model\\CollectionInfoIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/CollectionInfoIterator.php',
@@ -1214,6 +1222,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Model\\IndexInfoIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/IndexInfoIterator.php',
         'MongoDB\\Model\\IndexInfoIteratorIterator' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/IndexInfoIteratorIterator.php',
         'MongoDB\\Model\\IndexInput' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/IndexInput.php',
+        'MongoDB\\Model\\SearchIndexInput' => __DIR__ . '/..' . '/mongodb/mongodb/src/Model/SearchIndexInput.php',
         'MongoDB\\Operation\\Aggregate' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Aggregate.php',
         'MongoDB\\Operation\\BulkWrite' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/BulkWrite.php',
         'MongoDB\\Operation\\Count' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Count.php',
@@ -1221,6 +1230,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Operation\\CreateCollection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/CreateCollection.php',
         'MongoDB\\Operation\\CreateEncryptedCollection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/CreateEncryptedCollection.php',
         'MongoDB\\Operation\\CreateIndexes' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/CreateIndexes.php',
+        'MongoDB\\Operation\\CreateSearchIndexes' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/CreateSearchIndexes.php',
         'MongoDB\\Operation\\DatabaseCommand' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DatabaseCommand.php',
         'MongoDB\\Operation\\Delete' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Delete.php',
         'MongoDB\\Operation\\DeleteMany' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DeleteMany.php',
@@ -1230,6 +1240,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Operation\\DropDatabase' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DropDatabase.php',
         'MongoDB\\Operation\\DropEncryptedCollection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DropEncryptedCollection.php',
         'MongoDB\\Operation\\DropIndexes' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DropIndexes.php',
+        'MongoDB\\Operation\\DropSearchIndex' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/DropSearchIndex.php',
         'MongoDB\\Operation\\EstimatedDocumentCount' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/EstimatedDocumentCount.php',
         'MongoDB\\Operation\\Executable' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Executable.php',
         'MongoDB\\Operation\\Explain' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Explain.php',
@@ -1247,6 +1258,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Operation\\ListDatabaseNames' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/ListDatabaseNames.php',
         'MongoDB\\Operation\\ListDatabases' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/ListDatabases.php',
         'MongoDB\\Operation\\ListIndexes' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/ListIndexes.php',
+        'MongoDB\\Operation\\ListSearchIndexes' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/ListSearchIndexes.php',
         'MongoDB\\Operation\\MapReduce' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/MapReduce.php',
         'MongoDB\\Operation\\ModifyCollection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/ModifyCollection.php',
         'MongoDB\\Operation\\RenameCollection' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/RenameCollection.php',
@@ -1254,8 +1266,10 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'MongoDB\\Operation\\Update' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Update.php',
         'MongoDB\\Operation\\UpdateMany' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/UpdateMany.php',
         'MongoDB\\Operation\\UpdateOne' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/UpdateOne.php',
+        'MongoDB\\Operation\\UpdateSearchIndex' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/UpdateSearchIndex.php',
         'MongoDB\\Operation\\Watch' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/Watch.php',
         'MongoDB\\Operation\\WithTransaction' => __DIR__ . '/..' . '/mongodb/mongodb/src/Operation/WithTransaction.php',
+        'MongoDB\\PsrLogAdapter' => __DIR__ . '/..' . '/mongodb/mongodb/src/PsrLogAdapter.php',
         'MongoDB\\UpdateResult' => __DIR__ . '/..' . '/mongodb/mongodb/src/UpdateResult.php',
         'MongoHybrid\\Client' => __DIR__ . '/../../..' . '/lib/MongoHybrid/Client.php',
         'MongoHybrid\\Mongo' => __DIR__ . '/../../..' . '/lib/MongoHybrid/Mongo.php',
@@ -1373,6 +1387,7 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'OpenApi\\Processors\\AugmentParameters' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/AugmentParameters.php',
         'OpenApi\\Processors\\AugmentProperties' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/AugmentProperties.php',
         'OpenApi\\Processors\\AugmentRefs' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/AugmentRefs.php',
+        'OpenApi\\Processors\\AugmentRequestBody' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/AugmentRequestBody.php',
         'OpenApi\\Processors\\AugmentSchemas' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/AugmentSchemas.php',
         'OpenApi\\Processors\\BuildPaths' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/BuildPaths.php',
         'OpenApi\\Processors\\CleanUnmerged' => __DIR__ . '/..' . '/zircote/swagger-php/src/Processors/CleanUnmerged.php',
@@ -1436,12 +1451,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/src/LoggerInterface.php',
         'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/src/LoggerTrait.php',
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/src/NullLogger.php',
-        'Random\\BrokenRandomEngineError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/BrokenRandomEngineError.php',
-        'Random\\CryptoSafeEngine' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/CryptoSafeEngine.php',
-        'Random\\Engine' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/Engine.php',
-        'Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/Engine/Secure.php',
-        'Random\\RandomError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomError.php',
-        'Random\\RandomException' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomException.php',
         'RedisLite' => __DIR__ . '/../../..' . '/lib/RedisLite.php',
         'ReturnTypeWillChange' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
         'RobThree\\Auth\\Providers\\Qr\\BaconQrCodeProvider' => __DIR__ . '/..' . '/robthree/twofactorauth/lib/Providers/Qr/BaconQrCodeProvider.php',
@@ -1468,9 +1477,8 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'RobThree\\Auth\\Providers\\Time\\TimeException' => __DIR__ . '/..' . '/robthree/twofactorauth/lib/Providers/Time/TimeException.php',
         'RobThree\\Auth\\TwoFactorAuth' => __DIR__ . '/..' . '/robthree/twofactorauth/lib/TwoFactorAuth.php',
         'RobThree\\Auth\\TwoFactorAuthException' => __DIR__ . '/..' . '/robthree/twofactorauth/lib/TwoFactorAuthException.php',
+        'SQLite3Exception' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
         'SVGSanitizer' => __DIR__ . '/../../..' . '/lib/SVGSanitizer.php',
-        'SensitiveParameter' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
-        'SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
         'SimpleImageLib' => __DIR__ . '/../../..' . '/lib/SimpleImageLib.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
@@ -1664,10 +1672,6 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'Symfony\\Polyfill\\Php81\\Php81' => __DIR__ . '/..' . '/symfony/polyfill-php81/Php81.php',
-        'Symfony\\Polyfill\\Php82\\NoDynamicProperties' => __DIR__ . '/..' . '/symfony/polyfill-php82/NoDynamicProperties.php',
-        'Symfony\\Polyfill\\Php82\\Php82' => __DIR__ . '/..' . '/symfony/polyfill-php82/Php82.php',
-        'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Random/Engine/Secure.php',
-        'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/SensitiveParameterValue.php',
         'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
         'TestsDependency\\BaconQRCodeTest' => __DIR__ . '/..' . '/robthree/twofactorauth/testsDependency/BaconQRCodeTest.php',
         'TestsDependency\\EndroidQRCodeTest' => __DIR__ . '/..' . '/robthree/twofactorauth/testsDependency/EndroidQRCodeTest.php',
@@ -1737,10 +1741,10 @@ class ComposerStaticInit5723017241f53032fa5adda76b6b8857
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5723017241f53032fa5adda76b6b8857::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5723017241f53032fa5adda76b6b8857::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit5723017241f53032fa5adda76b6b8857::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit5723017241f53032fa5adda76b6b8857::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfb114fa4d291ebdea911cfa961c2cd9b::$classMap;
 
         }, null, ClassLoader::class);
     }

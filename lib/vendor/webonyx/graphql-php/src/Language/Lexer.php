@@ -598,7 +598,14 @@ class Lexer
                 $value .= $chunk . '"""';
                 $chunk = '';
             } else {
+                // move cursor back to before the first quote
                 $this->moveStringCursor(-2, -2);
+
+                if ($code === 10) { // new line
+                    ++$this->line;
+                    $this->lineStart = $this->position;
+                }
+
                 $chunk .= $char;
             }
 
@@ -706,7 +713,7 @@ class Lexer
      *
      * @return array{string, int|null, int}
      */
-    private function readChar(bool $advance = false, int $byteStreamPosition = null): array
+    private function readChar(bool $advance = false, ?int $byteStreamPosition = null): array
     {
         if ($byteStreamPosition === null) {
             $byteStreamPosition = $this->byteStreamPosition;

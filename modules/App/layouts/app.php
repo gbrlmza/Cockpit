@@ -6,8 +6,15 @@ $sidePanelContents = $this->block('app-side-panel', ['print' => false]);
 
 ?>
 <!DOCTYPE html>
-<html lang="en" class="<?= $this->helper('theme')->pageClass() ?>" data-base="<?= rtrim($this->baseUrl('/'), '/') ?>" data-route="<?= rtrim($this->routeUrl('/'), '/') ?>" data-csrf="<?= $this->helper('csrf')->token('app-csrf') ?>" data-version="<?= $this->retrieve('app.version') ?>" data-theme="<?= $this->helper('theme')->theme() ?>">
-
+<html
+    lang="en"
+    class="<?= $this->helper('theme')->pageClass() ?>"
+    data-base="<?= rtrim($this->baseUrl('/'), '/') ?>"
+    data-route="<?= rtrim($this->routeUrl('/'), '/') ?>"
+    data-csrf="<?= $this->helper('csrf')->token('app.csrf') ?>"
+    data-version="<?= $this->retrieve('app.version') ?>"
+    data-theme="<?= $this->helper('theme')->theme() ?>"
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,10 +31,10 @@ $sidePanelContents = $this->block('app-side-panel', ['print' => false]);
     <?php $this->block('app.layout.head') ?>
 
     <?php if ($this->helper('theme')->theme() == 'auto') : ?>
-        <script>
-            // set client preferred color scheme
-            document.documentElement.setAttribute('data-theme', getComputedStyle(document.documentElement).getPropertyValue('--app-auto-theme').trim());
-        </script>
+    <script>
+        // set client preferred color scheme
+        document.documentElement.setAttribute('data-theme', getComputedStyle(document.documentElement).getPropertyValue('--app-auto-theme').trim());
+    </script>
     <?php endif ?>
 
 </head>
@@ -52,7 +59,7 @@ $sidePanelContents = $this->block('app-side-panel', ['print' => false]);
                                 <li class="kiss-nav-divider"></li>
 
                                 <?php foreach ($links as $link) : ?>
-                                    <li class="<?= (strpos($this->request->route, $link['route']) === 0) ? 'active' : '' ?>">
+                                    <li class="<?= (str_starts_with($this->request->route, $link['route'])) ? 'active' : '' ?>">
                                         <a href="<?= $this->route($link['route']) ?>" aria-label="<?= t($link['label']) ?>" kiss-tooltip="right">
                                             <kiss-svg src="<?= $this->base($link['icon']) ?>" width="20" height="20"><canvas width="20" height="20"></canvas></kiss-svg>
                                         </a>
@@ -174,7 +181,7 @@ $sidePanelContents = $this->block('app-side-panel', ['print' => false]);
                                 <?php endif ?>
 
                                 <?php foreach ($links as $link) : ?>
-                                    <li class="<?= (strpos($this->request->route, $link['route']) === 0) ? 'active' : '' ?>">
+                                    <li class="<?= (str_starts_with($this->request->route, $link['route'])) ? 'active' : '' ?>">
                                         <a href="<?= $this->route($link['route']) ?>">
                                             <kiss-svg class="kiss-margin-small-right" src="<?= $this->base($link['icon']) ?>" width="25" height="25"></kiss-svg>
                                             <?= t($link['label']) ?>

@@ -1,19 +1,20 @@
 
 let checkSessionTimeout = function() {
 
-    let csrf;
     let check = function() {
 
         let isActive = document.getElementById('app-session-login');
 
-        App.request('/check-session').then(res => {
+        App.request('/check-session').then(rsp => {
 
-            if (res && res.status && isActive) {
+            App.csrf = rsp.csrf || '';
+
+            if (rsp && rsp.status && isActive) {
                 isActive.closest('kiss-dialog').close();
             }
 
-            if (res && !res.status && !isActive) {
-                VueView.ui.modal('app:assets/dialog/login.js', {csrf})
+            if (rsp && !rsp.status && !isActive) {
+                VueView.ui.modal('/auth/dialog');
             }
 
         }).catch(rsp => {
@@ -26,11 +27,6 @@ let checkSessionTimeout = function() {
     document.addEventListener('visibilitychange', function() {
         if (!document.hidden) check();
     }, false);
-
-    // get login csrf token
-    App.request('/utils/csrf/login').then(res => {
-        csrf = res.token;
-    });
 
 }
 
@@ -102,14 +98,13 @@ window.AppEventStream =  {
     }
 }
 
-document.addEventListener('DOMContentLoaded', e => {
+document.addEventListener('DOMContentLoaded', () => {
 
     checkSessionTimeout();
-
     AppEventStream.start();
 
     // bind global command for app search
-    Mousetrap.bind(['alt+f', 'ctrl+space'], function(e) {
+    Mousetrap.bind(['alt+f', 'ctrl+space'], e => {
         e.preventDefault();
         showAppSearch();
         return false;

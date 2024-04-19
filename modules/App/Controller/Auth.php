@@ -20,15 +20,27 @@ class Auth extends Base {
 
         $redirectTo = $this->param('to', '/');
 
-        if (\substr($redirectTo, 0, 1) !== '/') {
+        if (substr($redirectTo, 0, 1) !== '/') {
             $redirectTo = '/';
         }
 
         $redirectTo = htmlspecialchars($this->app->routeUrl($redirectTo), ENT_QUOTES, 'UTF-8');
+        $csrfToken = $this->helper('csrf')->token('app.login');
 
         $this->helper('theme')->pageClass('login-page');
 
-        return $this->render('app:views/auth/login.php', \compact('redirectTo'));
+        return $this->render('app:views/auth/login.php', compact('redirectTo', 'csrfToken'));
+    }
+
+    public function dialog() {
+
+        $this->layout = 'app:layouts/raw.php';
+
+        $this->app->response->mime = 'js';
+
+        $csrfToken = $this->helper('csrf')->token('app.login');
+
+        return $this->render('app:views/auth/dialog.php', compact('csrfToken'));
     }
 
     public function logout() {
@@ -50,12 +62,12 @@ class Auth extends Base {
 
         $auth = $this->param('auth');
 
-        if (!$auth || !isset($auth['user'], $auth['password']) || !\is_string($auth['user']) || !\is_string($auth['password'])) {
+        if (!$auth || !isset($auth['user'], $auth['password']) || !is_string($auth['user']) || !\is_string($auth['password'])) {
             return $this->stop(412);
         }
 
-        if (!$this->helper('csrf')->isValid('login', $this->param('csrf'), true)) {
-            return $this->stop(412);
+        if (!$this->helper('csrf')->isValid('app.login', $this->param('csrf'), true)) {
+            return $this->stop(['error' => 'APP_LOGIN_SESSION_INVALID'], 412);
         }
 
         $auth = [
@@ -70,8 +82,8 @@ class Auth extends Base {
 
         $user = $this->helper('auth')->authenticate($auth);
 
-        if ($user && $user['role'] == 'public') {
-            return $this->stop(412);
+        if ($user && $user['role'] === 'public') {
+            return $this->stop(401);
         }
 
         if ($user) {
@@ -105,7 +117,7 @@ class Auth extends Base {
 
             $this->app->trigger('app.user.login', [$user]);
 
-            return ['success' => true, 'user' => $user];
+            return ['success' => true, 'user' => $user, 'csrf' => $this->helper('csrf')->token('app.csrf')];
         }
 
         return ['success' => false];
@@ -115,6 +127,10 @@ class Auth extends Base {
 
         $code = $this->param('code', null);
         $token = $this->param('token', null);
+
+        if (!$code || !$token) {
+            return $this->stop(412);
+        }
 
         try {
             $user = (array) $this->app->helper('jwt')->decode($token);
@@ -139,7 +155,7 @@ class Auth extends Base {
 
             $this->app->trigger('app.user.login', [&$user]);
 
-            return ['success' => true, 'user' => $user];
+            return ['success' => true, 'user' => $user, 'csrf' => $this->helper('csrf')->token('app.csrf')];
         }
 
         return $this->stop(412);

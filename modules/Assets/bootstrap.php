@@ -55,7 +55,7 @@ $this->module('assets')->extend([
         return $this->app->dataStorage->find('assets/folders', $options)->toArray();
     },
 
-    'upload' => function(string|array $param = 'files', array $meta = []) {
+    'upload' => function(string|array $param = 'files', array $meta = [], bool $isUpload = true) {
 
         $files = [];
 
@@ -75,7 +75,7 @@ $this->module('assets')->extend([
         $allowed   = $allowed == '*' ? true : str_replace([' ', ','], ['', '|'], preg_quote(is_array($allowed) ? implode(',', $allowed) : $allowed));
         $max_size  = $this->app->retrieve('assets/max_upload_size', 0);
 
-        $forbiddenExtension = ['php', 'phar', 'phtml', 'phps', 'htm', 'html', 'xhtml', 'htaccess'];
+        $forbiddenExtension = ['bat', 'exe', 'sh', 'php', 'phar', 'phtml', 'phps', 'htm', 'html', 'xhtml', 'htaccess'];
         $forbiddenMime = [
             'application/x-httpd-php', 'application/x-php', 'text/x-php',
             'text/html', 'application/xhtml+xml'
@@ -94,6 +94,10 @@ $this->module('assets')->extend([
 
                 $extension = strtolower(pathinfo(parse_url($_file, PHP_URL_PATH), PATHINFO_EXTENSION));
 
+                if (!$extension) {
+                    $_isAllowed = false;
+                }
+
                 // prevent uploading php / html files
                 if ($_isAllowed && (
                     in_array($extension, $forbiddenExtension) ||
@@ -102,7 +106,7 @@ $this->module('assets')->extend([
                     $_isAllowed = false;
                 }
 
-                if (!$files['error'][$i] && $_isAllowed && $_sizeAllowed && move_uploaded_file($files['tmp_name'][$i], $_file)) {
+                if (!$files['error'][$i] && $_isAllowed && $_sizeAllowed && ($isUpload ? move_uploaded_file($files['tmp_name'][$i], $_file) : rename($files['tmp_name'][$i], $_file))) {
 
                     $_files[]   = $_file;
                     $uploaded[] = $files['name'][$i];

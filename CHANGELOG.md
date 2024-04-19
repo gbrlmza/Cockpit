@@ -1,15 +1,50 @@
 # Release Notes
 
-## WIP
+## 2.8.3 (2024-04-08)
+
+- Fix: Reflected Cross-Site Scripting via GraphQL Viewer
+- Fix: Stored Cross-Site Scripting in Content Item using text fields
+- Fix: Arbitrary File Write through Path Traversal and Rename Functionality of Finder
+- Fix: Static Cross-Site Request Forgery Csrf Token
+- Fix session after account save
+- Fix deprecation message on mime check (image api)
+- Update TinyMCE to v7.0.0
+- Update uppy.js to v.3.23.0
+- Add finder.disabled setting
+- Add error notification on failed asset upload
+
+## 2.8.2 (2024-03-19)
+
+- Update Vue to 3.4.21
+- Support $regex filter on list of strings (MongoLite)
+- Add more schema configuration support for Redis based MemoryStorage connection strings
+- Update referenced asset items on content item save
+- Add App.utils.isNumeric helper function
+- Add default icon-set
+- Add system update admin ui
+
+## 2.8.1 (2024-02-11)
+
+- Allow to configure thumbnail storage path via config
+- Fix content preview #171
+- Update Vue to 3.4.18
+
+## 2.8.0 (2024-01-31)
 
 - Lazy loading of asset preview images
-- Update Vue to version 3.4.13
+- Update Vue to version 3.4.15
 - Require PHP >=8.2
 - Add vips config option for more performant thumbnail generation
 - Add ffmpeg config option for more video thumbnail generation support
 - Fix download file / folder (Finder)
 - Add alt text info for image assets
 - Render asset field with multiple values as grid
+- Add support for ${ENV_VAR} in config values
+- Allow custom database settings on space creation
+- Spaces groups
+- Add account verification before deleting a space
+- Add assets sorting
+- Add quick sort tree item (move first or last)
 
 ## 2.7.2 (2023-12-30)
 
