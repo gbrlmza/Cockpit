@@ -1,6 +1,6 @@
 <?php
 
-const APP_VERSION = '2.8.3';
+const APP_VERSION = '2.8.4';
 
 if (!defined('APP_ADMIN')) define('APP_ADMIN', false);
 if (!defined('APP_CLI')) define('APP_CLI', PHP_SAPI == 'cli');
@@ -271,8 +271,10 @@ class Cockpit {
                 $app->trigger('error', [$error, $exception]);
 
                 // output error to system error log
-                if (function_exists('ini_get')) {
-                    error_log("[{$error['time']}] COCKPIT[ERROR]: {$error['message']} @{$error['file']}:{$error['line']}\n", 3, ini_get('error_log'));
+                if (function_exists('ini_get') && ini_get('error_log')) {
+                    try {
+                        error_log("[{$error['time']}] COCKPIT[ERROR]: {$error['message']} @{$error['file']}:{$error['line']}\n", 3, ini_get('error_log'));
+                    } catch (\Throwable $e) {}
                 }
             });
         }

@@ -1,25 +1,9 @@
 
 let uuid = 0;
 
-function setHighestZindex(element) {
-
-    let highestZindex = parseInt(window.getComputedStyle(element).zIndex),
-        offsetParent = element.offsetParent || document.body,
-        zIndex;
-
-    Array.from(offsetParent.children).forEach((node) => {
-        zIndex = parseInt(window.getComputedStyle(node).zIndex) || 0;
-        if (zIndex > highestZindex) highestZindex = zIndex;
-    });
-
-    element.style.zIndex = highestZindex + 1;
-}
-
-window.setHighestZindex = setHighestZindex;
-
 export default {
 
-    notify: function (message, status, timeout) {
+    notify(message, status, timeout) {
 
         if (timeout !== false && !timeout) {
             timeout = 2500
@@ -35,18 +19,18 @@ export default {
         }).show();
     },
 
-    block: function (info='', context = 'ui-block') {
+    block(info='', context = 'ui-block') {
 
         document.body.insertAdjacentHTML('beforeend', `
             <app-loader-cover class="${context}" label="${info}"></app-loader-cover>
         `);
     },
 
-    unblock: function (context = 'ui-block') {
+    unblock(context = 'ui-block') {
         document.querySelectorAll(`.${context}`).forEach(node => node.parentNode.removeChild(node))
     },
 
-    offcanvas: function (content, options) {
+    offcanvas(content, options) {
 
         let id = `offcanvas-${uuid++}`,
             size = '';
@@ -54,6 +38,8 @@ export default {
         options = options || {};
 
         switch (options.size) {
+            case 'medium':
+                size = 'kiss-width-1-2@m kiss-width-1-3@xl';
             case 'large':
                 size = 'kiss-width-1-3@m kiss-width-1-4@xl';
                 break;
@@ -97,8 +83,6 @@ export default {
 
             setTimeout(() => {
 
-                setHighestZindex(offcanvas);
-
                 let ele = offcanvas.querySelector('[autofocus]');
 
                 if (ele) {
@@ -111,7 +95,7 @@ export default {
     },
 
 
-    dialog: function (content, options, dialogtype) {
+    dialog(content, options, dialogtype) {
 
         let id = `dialog-${uuid++}`;
 
@@ -142,8 +126,6 @@ export default {
 
             setTimeout(() => {
 
-                setHighestZindex(dialog);
-
                 let ele = dialog.querySelector('[autofocus]');
 
                 if (ele) {
@@ -155,7 +137,7 @@ export default {
         return dialog;
     },
 
-    alert: function (content, options) {
+    alert(content, options) {
 
         options = Object.assign({escape:true}, options || {});
 
@@ -171,7 +153,7 @@ export default {
         dialog.show();
     },
 
-    confirm: function (text, onconfirm, oncancel, options) {
+    confirm(text, onconfirm, oncancel, options) {
 
         options = Object.assign({escape:true}, options || {});
 
@@ -198,7 +180,7 @@ export default {
         dialog.show();
     },
 
-    prompt: function (text, value = '', clb, options) {
+    prompt(text, value = '', clb, options) {
 
         options = Object.assign({
             type: 'text',
@@ -241,7 +223,7 @@ export default {
         setTimeout(() => input.focus(), 300);
     },
 
-    popout: function (content, options) {
+    popout(content, options) {
 
         let id = `popout-${uuid++}`,
         size = '';
@@ -276,8 +258,6 @@ export default {
             popout.__show();
 
             setTimeout(() => {
-
-                setHighestZindex(popout);
 
                 let ele = popout.querySelector('[autofocus]');
 

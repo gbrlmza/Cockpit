@@ -1,5 +1,5 @@
 import { on, trigger } from '../../js/events.js';
-import { isInViewport, isElementOnTop } from '../../js/utils.js';
+import { isInViewport, isElementOnTop, setHighestZindex } from '../../js/utils.js';
 
 
 on(document.documentElement, 'click', '[kiss-popout]', function (e) {
@@ -50,6 +50,10 @@ customElements.define('kiss-popout', class extends HTMLElement {
                 this.close();
             }
         });
+
+        if (this.getAttribute('open') === 'true') {
+            setHighestZindex(this);
+        }
     }
 
     show(ele, position = 'left') {
@@ -98,6 +102,17 @@ customElements.define('kiss-popout', class extends HTMLElement {
             }
         }
 
+        setTimeout(() => {
+
+            const focusElement = this.querySelector('[autofocus]') || this.querySelector('a[href]:not([target="_blank"]),button:not([disabled])');
+
+            if (focusElement) {
+                focusElement.focus();
+            }
+
+        }, 100);
+
+        setHighestZindex(this);
         this.setAttribute('open', 'true');
     }
 

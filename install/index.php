@@ -33,17 +33,17 @@ function ensureWritableStorageFolder($path) {
 
 // misc checks
 $checks = [
-    'Php version >= 8.1.0'                              => (version_compare(PHP_VERSION, '8.1.0') >= 0),
-    'Missing PDO extension with Sqlite support'         => hasSQLiteSupport(),
-    'Curl extension not available'                      => extension_loaded('curl'),
-    'Fileinfo extension not available'                  => extension_loaded('fileinfo'),
-    'GD extension not available'                        => extension_loaded('gd'),
-    'OpenSSL extension not available'                   => extension_loaded('openssl'),
-    'Data folder is not writable: /storage/data'        => ensureWritableStorageFolder('/data'),
-    'Cache folder is not writable: /storage/cache'      => ensureWritableStorageFolder('/cache'),
-    'Temp folder is not writable: /storage/tmp'         => ensureWritableStorageFolder('/tmp'),
-    'Thumbs folder is not writable: /storage/thumbs'    => ensureWritableStorageFolder('/thumbs'),
-    'Uploads folder is not writable: /storage/uploads'  => ensureWritableStorageFolder('/uploads'),
+    'Php version >= 8.1.0'                               => (version_compare(PHP_VERSION, '8.2.0') >= 0),
+    'Missing PDO extension with Sqlite support'          => hasSQLiteSupport(),
+    'Curl extension not available'                       => extension_loaded('curl'),
+    'Fileinfo extension not available'                   => extension_loaded('fileinfo'),
+    'GD extension not available'                         => extension_loaded('gd'),
+    'OpenSSL extension not available'                    => extension_loaded('openssl'),
+    'Data folder is not writable: /storage/data'         => ensureWritableStorageFolder('/data'),
+    'Cache folder is not writable: /storage/cache'       => ensureWritableStorageFolder('/cache'),
+    'Temp folder is not writable: /storage/tmp'          => ensureWritableStorageFolder('/tmp'),
+    'Thumbs folder is not writable: /storage/tmp/thumbs' => ensureWritableStorageFolder('/tmp/thumbs'),
+    'Uploads folder is not writable: /storage/uploads'   => ensureWritableStorageFolder('/uploads'),
 ];
 
 $failed = [];
@@ -81,6 +81,13 @@ if (!count($failed)) {
     // check whether cockpit is already installed
     try {
 
+        // check memory config
+        @$app->memory->get('test');
+
+        if (ini_get('session.save_handler') == 'redis') {
+            $connection = @(new MemoryStorage\Client(ini_get('session.save_path')))->get('test');
+        }
+
         if ($app->dataStorage->getCollection('system/users')->count()) {
 
             header('Location: ../'.($APP_SPACE ? ":{$APP_SPACE}" : ""));
@@ -107,8 +114,11 @@ if (!count($failed)) {
 
     } catch(Throwable $e) {
 
-        $failed[] = $e->getMessage();
-
+        if (str_contains(get_class($e), 'MongoDB')) {
+            $failed[] = 'MongoDB connection failed';
+        } else {
+            $failed[] = $e->getMessage();
+        }
     }
 
 }

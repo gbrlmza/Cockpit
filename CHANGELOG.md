@@ -1,5 +1,28 @@
 # Release Notes
 
+## WIP
+
+- Update Vue to 3.4.27
+- Fix upload asset modal zIndex issue
+- Fix Uppy init/creation/cleanup
+- Fix Uppy init on drag'n drop
+- Add color set option to color field type
+- Fix GraphQL query error requesting select type fields with multiple option
+- Add missing HTTP status codes
+- Add api rate limits config
+- Add api allowed origins config
+- Fix zIndex layer issues (admin ui)
+
+## 2.8.4 (2024-05-05)
+
+- Fix Content model creation edge case
+- Fix GraphQL queries with float values in number typed fields
+- Update icon font
+- make /api/system/healthcheck available without token
+- Update Vue to 3.4.26
+- Improve system health check
+- Fix possible dialog, offcanvas and popup z-index conflicts
+
 ## 2.8.3 (2024-04-08)
 
 - Fix: Reflected Cross-Site Scripting via GraphQL Viewer

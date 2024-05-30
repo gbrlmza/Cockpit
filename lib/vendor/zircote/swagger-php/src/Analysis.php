@@ -76,6 +76,8 @@ class Analysis
             return;
         }
 
+        $context->ensureRoot($this->context);
+
         if ($annotation instanceof OA\OpenApi) {
             $this->openapi = $this->openapi ?: $annotation;
         } else {
@@ -369,8 +371,7 @@ class Analysis
             return $context;
         }
 
-        // Weird, did you use the addAnnotation/addAnnotations methods?
-        throw new \Exception('Annotation has no context');
+        throw new \RuntimeException('Annotation has no context - did you use addAnnotation()/addAnnotations()');
     }
 
     /**
